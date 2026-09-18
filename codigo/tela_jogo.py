@@ -70,20 +70,19 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
-                if estado['vidas'] > 1:
-                    estado['vidas'] -= 1             
-                    estado['mensagem'] = "Você perdeu uma vida"
-                else:
-                    estado['vidas'] -= 1
-                    estado['mensagem'] = "Você perdeu todas as vidas"
+                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                estado['vidas'] -= 1
+                if estado['vidas'] == 0:
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x-1, y]:
+                    if monstro['posicao'] == [x+1, y]:
                         monstro['vida'] -= 1
-                        estado['mensagem'] = "O monstro perdeu uma vida"
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
+                            estado['mensagem'] = "O monstro foi vencido"
+                        else:
+                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
@@ -95,20 +94,19 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
-                if estado['vidas'] > 1:
-                    estado['vidas'] -= 1             
-                    estado['mensagem'] = "Você perdeu uma vida"
-                else:
-                    estado['vidas'] -= 1
-                    estado['mensagem'] = "Você perdeu todas as vidas"
+                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                estado['vidas'] -= 1
+                if estado['vidas'] == 0:
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
                     if monstro['posicao'] == [x+1, y]:
                         monstro['vida'] -= 1
-                        estado['mensagem'] = "O monstro perdeu uma vida"
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
+                            estado['mensagem'] = "O monstro foi vencido"
+                        else:
+                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
                   
@@ -120,20 +118,19 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
-                if estado['vidas'] > 1:
-                    estado['vidas'] -= 1             
-                    estado['mensagem'] = "Você perdeu uma vida"
-                else:
-                    estado['vidas'] -= 1
-                    estado['mensagem'] = "Você perdeu todas as vidas"
+                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                estado['vidas'] -= 1
+                if estado['vidas'] == 0:
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x, y-1]:
+                    if monstro['posicao'] == [x+1, y]:
                         monstro['vida'] -= 1
-                        estado['mensagem'] = "O monstro perdeu uma vida"
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
+                            estado['mensagem'] = "O monstro foi vencido"
+                        else:
+                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
@@ -145,20 +142,19 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
-                if estado['vidas'] > 1:
-                    estado['vidas'] -= 1             
-                    estado['mensagem'] = "Você perdeu uma vida"
-                else:
-                    estado['vidas'] -= 1
-                    estado['mensagem'] = "Você perdeu todas as vidas"
+                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                estado['vidas'] -= 1
+                if estado['vidas'] == 0:
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x, y+1]:
+                    if monstro['posicao'] == [x+1, y]:
                         monstro['vida'] -= 1
-                        estado['mensagem'] = "O monstro perdeu uma vida"
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
+                            estado['mensagem'] = "O monstro foi vencido"
+                        else:
+                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
