@@ -34,6 +34,9 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
                     if posicao == parede:
                         motor.desenha_string(janela, inicio_x + x, inicio_y + y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
 
+                for monstro in estado['monstros']:
+                    if posicao == monstro['posicao']:
+                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
 
         for x in range(estado['max_vidas']):
             if x < estado['vidas']:

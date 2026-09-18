@@ -217,6 +217,13 @@ def inicializa_estado():
     for objeto in objetos:
         posicoes_ocupadas.append(objeto['posicao'])
 
+    monstros = []
+    monstros += gera_objetos(3, MONSTRO, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    for monstro in monstros:
+        monstro['vida'] = 5
+        monstro['probabilidade de ataque'] = 0.3
+    print(monstros)
+
     return {
         'tela_atual': TELA_JOGO,
         'pos_jogador': pos_jogador,
@@ -224,6 +231,7 @@ def inicializa_estado():
         'max_vidas': 5,  # Quantidade máxima de vidas que o jogador pode ter - o valor da chave 'vidas' nunca pode ser maior que o valor da chave 'max_vidas'
         'objetos': objetos,
         'paredes': paredes,
+        'monstros': monstros,
         'mapa': mapa,
         'mensagem': '',  # Use esta mensagem para mostrar mensagens ao jogador, como "Você perdeu uma vida" ou "Você ganhou uma vida"
     }
