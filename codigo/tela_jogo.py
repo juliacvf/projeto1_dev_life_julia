@@ -58,19 +58,32 @@ def atualiza_estado(estado, tecla):
 
     
     if tecla == motor.SETA_ESQUERDA:
-        if x-1 >= 0:
-            x -= 1
-    elif tecla == motor.SETA_DIREITA:
-        if x+1 < len(mapa[0]):
-            x += 1
+        if [x-1, y] not in estado['paredes']: 
+            if x-1 >= 0:
+                x -= 1
+        else:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
 
+    elif tecla == motor.SETA_DIREITA:
+        if [x+1, y] not in estado['paredes']:
+            if x+1 < len(mapa[0]):
+                x += 1
+        else:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
+                  
     elif tecla == motor.SETA_CIMA:
-       if y-1 >= 0:
-            y -= 1
+        if [x, y-1] not in estado['paredes']:
+            if y-1 >= 0:
+                y -= 1
+        else:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_BAIXO:
-        if y+1 < len(mapa):
-            y += 1
+        if [x, y+1] not in estado['paredes']:
+            if y+1 < len(mapa):
+                y += 1
+        else:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
 
     if [x, y] != estado['pos_jogador']:
         estado['pos_jogador'] = [x, y]
