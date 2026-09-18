@@ -6,16 +6,48 @@ import motor_grafico as motor  # Utilize as funções do arquivo motor_grafico.p
 
 
 def desenha_tela(janela, estado, altura_tela, largura_tela):
-    # Utilize o dicionário estado para saber onde o jogador e os outros objetos estão.
-    # Por exemplo, para saber a posição do jogador, use estado['pos_jogador']
-    # O mapa esta armazenado em estado['mapa'].
     motor.preenche_fundo(janela, PRETO)
-    
-    # O seu código deve desenhar a tela do jogo aqui a partir dos valores no dicionário "estado"
-    # APAGUE ESTA LINHA E A LINHA ABAIXO E ESCREVA SEU CÓDIGO AQUI
-    motor.desenha_string(janela, 0, altura_tela // 2, 'APAGUE ESTA LINHA', PRETO, BRANCO)
+
+    if estado['tela_atual'] == TELA_JOGO:
+        mapa = estado['mapa']
+        altura_mapa = len(mapa)
+        largura_mapa = len(mapa[0])
+        inicio_x = (largura_tela - largura_mapa) // 2
+        inicio_y = (altura_tela - altura_mapa) // 2
+
+
+        for y in range(altura_mapa):
+            for x in range(largura_mapa):
+                motor.desenha_string(janela, inicio_x + x, inicio_y + y, ' ', VERDE_ESCURO, VERDE_ESCURO)
+
+        for y in range(altura_mapa):
+            for x in range(largura_mapa):
+                posicao = [x, y]
+
+                if posicao == estado['pos_jogador']:
+                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, JOGADOR, VERDE_ESCURO, AZUL)
+
+                if estado['max_vidas'] - estado['vidas'] == 0:
+                    if y == 0 and x in range(5):
+                        motor.desenha_string(janela, x, y, CORACAO, PRETO, VERMELHO)
+
+                if estado['max_vidas'] - estado['vidas'] != 0:
+                    if y == 0 and x in range(estado['vidas']):
+                        motor.desenha_string(janela, x, y, CORACAO, PRETO, VERMELHO)
+
+                    if y == 0 and x in range(estado['vidas']+1, estado['max_vidas']):
+                        motor.desenha_string(janela, x, y, CORACAO, PRETO, BRANCO)
+
+                    if y == len(mapa)-1 and x in range(6):
+                        mensagem = estado['mensagem']
+                        motor.desenha_string(janela, x, y, mensagem, PRETO, AMARELO)
+
+                for objeto in estado['objetos']:
+                    if posicao == objeto['posicao']:
+                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
 
     motor.mostra_janela(janela)
+
 
 
 def atualiza_estado(estado, tecla):
