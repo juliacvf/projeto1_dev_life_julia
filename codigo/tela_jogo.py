@@ -1,9 +1,6 @@
-from constantes import *  # Você pode usar as constantes definidas em constantes.py, se achar útil
-                          # Por exemplo, usar a constante CORACAO é o mesmo que colocar a string '❤'
-                          # diretamente no código
-import motor_grafico as motor  # Utilize as funções do arquivo motor_grafico.py para desenhar na tela
-                               # Por exemplo: motor.preenche_fundo(janela, [0, 0, 0]) preenche o fundo de preto
-
+from constantes import *
+import motor_grafico as motor
+import random   
 
 def desenha_tela(janela, estado, altura_tela, largura_tela):
     motor.preenche_fundo(janela, PRETO)
@@ -55,36 +52,113 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
 def atualiza_estado(estado, tecla):
     estado['mensagem'] = ''
     mapa = estado['mapa']
+    monstros = estado['monstros']
+    posicao_monstros = []
+    for monstro in monstros:
+        posicao_monstros.append(monstro['posicao'])
+
 
     x = estado['pos_jogador'][0]
     y = estado['pos_jogador'][1]
 
     
     if tecla == motor.SETA_ESQUERDA:
-        if [x-1, y] not in estado['paredes']: 
+        if [x-1, y] not in estado['paredes'] and [x-1, y] not in posicao_monstros:
             if x-1 >= 0:
                 x -= 1
+        elif [x-1, y] in posicao_monstros:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
+            numero = random.random()
+            if numero < 0.3:
+                if estado['vidas'] > 1:
+                    estado['vidas'] -= 1             
+                    estado['mensagem'] = "Você perdeu uma vida"
+                else:
+                    estado['vidas'] -= 1
+                    estado['mensagem'] = "Você perdeu todas as vidas"
+                    estado['tela_atual'] = SAIR
+            else:
+                for monstro in monstros:
+                    if monstro['posicao'] == [x-1, y]:
+                        monstro['vida'] -= 1
+                        estado['mensagem'] = "O monstro perdeu uma vida"
+                        if monstro['vida'] == 0:
+                            monstros.remove(monstro)
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_DIREITA:
-        if [x+1, y] not in estado['paredes']:
+        if [x+1, y] not in estado['paredes'] and [x+1, y] not in posicao_monstros:
             if x+1 < len(mapa[0]):
                 x += 1
+        elif [x+1, y] in posicao_monstros:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
+            numero = random.random()
+            if numero < 0.3:
+                if estado['vidas'] > 1:
+                    estado['vidas'] -= 1             
+                    estado['mensagem'] = "Você perdeu uma vida"
+                else:
+                    estado['vidas'] -= 1
+                    estado['mensagem'] = "Você perdeu todas as vidas"
+                    estado['tela_atual'] = SAIR
+            else:
+                for monstro in monstros:
+                    if monstro['posicao'] == [x+1, y]:
+                        monstro['vida'] -= 1
+                        estado['mensagem'] = "O monstro perdeu uma vida"
+                        if monstro['vida'] == 0:
+                            monstros.remove(monstro)
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
                   
     elif tecla == motor.SETA_CIMA:
-        if [x, y-1] not in estado['paredes']:
+        if [x, y-1] not in estado['paredes'] and [x, y-1] not in posicao_monstros:
             if y-1 >= 0:
                 y -= 1
+        elif [x, y-1] in posicao_monstros:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
+            numero = random.random()
+            if numero < 0.3:
+                if estado['vidas'] > 1:
+                    estado['vidas'] -= 1             
+                    estado['mensagem'] = "Você perdeu uma vida"
+                else:
+                    estado['vidas'] -= 1
+                    estado['mensagem'] = "Você perdeu todas as vidas"
+                    estado['tela_atual'] = SAIR
+            else:
+                for monstro in monstros:
+                    if monstro['posicao'] == [x, y-1]:
+                        monstro['vida'] -= 1
+                        estado['mensagem'] = "O monstro perdeu uma vida"
+                        if monstro['vida'] == 0:
+                            monstros.remove(monstro)
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_BAIXO:
-        if [x, y+1] not in estado['paredes']:
+        if [x, y+1] not in estado['paredes'] and [x, y+1] not in posicao_monstros:
             if y+1 < len(mapa):
                 y += 1
+        elif [x, y+1] in posicao_monstros:
+            estado['mensagem'] = "Você não pode se mover nessa direção"
+            numero = random.random()
+            if numero < 0.3:
+                if estado['vidas'] > 1:
+                    estado['vidas'] -= 1             
+                    estado['mensagem'] = "Você perdeu uma vida"
+                else:
+                    estado['vidas'] -= 1
+                    estado['mensagem'] = "Você perdeu todas as vidas"
+                    estado['tela_atual'] = SAIR
+            else:
+                for monstro in monstros:
+                    if monstro['posicao'] == [x, y+1]:
+                        monstro['vida'] -= 1
+                        estado['mensagem'] = "O monstro perdeu uma vida"
+                        if monstro['vida'] == 0:
+                            monstros.remove(monstro)
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
