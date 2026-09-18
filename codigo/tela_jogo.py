@@ -30,6 +30,11 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
                     if posicao == objeto['posicao']:
                         motor.desenha_string(janela, inicio_x + x, inicio_y + y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
 
+                for parede in estado['paredes']:
+                    if posicao == parede:
+                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
+
+
         for x in range(estado['max_vidas']):
             if x < estado['vidas']:
                 cor = VERMELHO
@@ -50,6 +55,7 @@ def atualiza_estado(estado, tecla):
 
     x = estado['pos_jogador'][0]
     y = estado['pos_jogador'][1]
+
     
     if tecla == motor.SETA_ESQUERDA:
         if x-1 >= 0:
@@ -89,9 +95,11 @@ def atualiza_estado(estado, tecla):
                         estado['mensagem'] = "Você ganhou uma vida"
 
                     estado['objetos'].remove(objeto)
+                
 
     if tecla == 'i':
         estado['tela_atual'] = TELA_INVENTARIO
 
     elif tecla == motor.ESCAPE or tecla =='q':
         estado['tela_atual'] = SAIR
+
