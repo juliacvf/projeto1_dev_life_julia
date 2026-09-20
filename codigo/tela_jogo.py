@@ -47,6 +47,8 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
 
     motor.mostra_janela(janela)
 
+
+
 def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
     movimentos = [motor.SETA_ESQUERDA, motor.SETA_DIREITA, motor.SETA_CIMA, motor.SETA_BAIXO]
     mapa = estado['mapa']
@@ -65,12 +67,12 @@ def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
     for monstro in monstros:
         xm = monstro['posicao'][0]
         ym = monstro['posicao'][1]
-        
-        if tecla == motor.SETA_ESQUERDA or tecla == motor.SETA_DIREITA or tecla == motor.SETA_CIMA or tecla == motor.SETA_BAIXO:
-            movimento = random.choice(movimentos)
-        
-        if tecla == motor.SETA_ESQUERDA:
-            if [x-1, y] != [xm, ym]:
+
+        if (tecla == motor.SETA_ESQUERDA and [x-1, y] != [xm, ym]) or (tecla == motor.SETA_DIREITA and [x+1, y] != [xm, ym]) or (tecla == motor.SETA_CIMA and [x, y-1] != [xm, ym]) or (tecla == motor.SETA_BAIXO and [x, y+1] != [xm, ym]):
+
+            if monstro['tipo'] == MONSTRO1:
+                movimento = random.choice(movimentos)
+
                 if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
                     xm -= 1
                 elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
@@ -80,43 +82,98 @@ def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
                 elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
                     ym += 1
 
-        elif tecla == motor.SETA_DIREITA:
-            if [x+1, y] != [xm, ym]:
-                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
-                    xm -= 1
-                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
-                    xm += 1
-                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
-                    ym -= 1
-                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
-                    ym += 1
 
-        elif tecla == motor.SETA_CIMA:
-            if [x, y-1] != [xm, ym]:
-                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
-                    xm -= 1
-                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
-                    xm += 1
-                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
-                    ym -= 1
-                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
-                    ym += 1
+            elif monstro['tipo'] == MONSTRO2:
+                distancia_horizontal = abs(xm - estado['pos_jogador'][0])
+                distancia_vertical = abs(ym - estado['pos_jogador'][1])
 
-        elif tecla == motor.SETA_BAIXO:
-            if [x, y+1] != [xm, ym]:
-                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
-                    xm -= 1
-                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
-                    xm += 1
-                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
-                    ym -= 1
-                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
-                    ym += 1
+                if monstro['eixo'] is None:
+                    if distancia_horizontal > distancia_vertical:
+                        if estado['pos_jogador'][0] - xm < 0 and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                            xm -= 1
+                            monstro['eixo'] = 'vertical'
+                        elif estado['pos_jogador'][0] - xm > 0 and  [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                            xm += 1
+                            monstro['eixo'] = 'vertical'
+                        else:
+                            monstro['eixo'] = 'vertical'
+
+                    else:
+                        if estado['pos_jogador'][1] - ym < 0 and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                            ym -= 1
+                            monstro['eixo'] = 'horizontal'
+                        elif estado['pos_jogador'][1] - ym > 0 and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                            ym += 1
+                            monstro['eixo'] = 'horizontal'
+                        else:
+                            monstro['eixo'] = 'horizontal'
+
+                elif monstro['eixo'] == 'vertical':
+                    if estado['pos_jogador'][1] - ym < 0 and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                        ym -= 1
+                        monstro['eixo'] = 'horizontal'
+                    elif estado['pos_jogador'][1] - ym > 0 and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                        ym += 1
+                        monstro['eixo'] = 'horizontal'
+                    else:
+                        monstro['eixo'] = 'horizontal'
+
+                elif monstro['eixo'] == 'horizontal':
+                    if estado['pos_jogador'][0] - xm < 0 and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                        xm -= 1
+                        monstro['eixo'] = 'vertical'
+                    elif estado['pos_jogador'][0] - xm > 0 and  [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                        xm += 1
+                        monstro['eixo'] = 'vertical'
+                    else:
+                        monstro['eixo'] = 'vertical'
+                    
+
+            elif monstro['tipo'] == MONSTRO3:
+                distancia_horizontal = abs(xm - estado['pos_jogador'][0])
+                distancia_vertical = abs(ym - estado['pos_jogador'][1])
+                distancias = ['horizontal', 'vertical']
+                situacao = ['esperar', 'avançar']
+
+                if monstro['situação'] is None:
+                    situação = random.choice(situacao)
+                    monstro['situação'] = situação
+
+                if monstro['situação'] == 'avançar':
+                    if distancia_horizontal > distancia_vertical:
+                        if estado['pos_jogador'][0] - xm < 0 and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and [xm-2, ym] not in estado['paredes'] and [xm-2, ym] not in posicao_monstros and [xm-2, ym] not in posicao_objetos and [xm-2, ym] != estado['pos_jogador'] and xm-2 >= 0:
+                            xm -= 2
+                        elif estado['pos_jogador'][0] - xm > 0 and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and [xm+2, ym] not in estado['paredes'] and [xm+2, ym] not in posicao_monstros and [xm+2, ym] not in posicao_objetos and [xm+2, ym] != estado['pos_jogador'] and xm+2 < len(mapa[0]):
+                            xm += 2
+                    elif distancia_vertical > distancia_horizontal:
+                        if estado['pos_jogador'][1] - ym < 0 and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and [xm, ym-2] not in estado['paredes'] and [xm, ym-2] not in posicao_monstros and [xm, ym-2] not in posicao_objetos and [xm, ym-2] != estado['pos_jogador'] and ym-2 >= 0:
+                            ym -= 2
+                        elif estado['pos_jogador'][1] - ym > 0 and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and [xm, ym+2] not in estado['paredes'] and [xm, ym+2] not in posicao_monstros and [xm, ym+2] not in posicao_objetos and [xm, ym+2] != estado['pos_jogador'] and ym+2 < len(mapa):
+                            ym += 2
+                    else:
+                        distancia = random.choice(distancias)
+                        if distancia == 'horizontal':
+                            if estado['pos_jogador'][0] - xm < 0 and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and [xm-2, ym] not in estado['paredes'] and [xm-2, ym] not in posicao_monstros and [xm-2, ym] not in posicao_objetos and [xm-2, ym] != estado['pos_jogador'] and xm-2 >= 0:
+                                xm -= 2
+                            elif estado['pos_jogador'][0] - xm > 0 and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and [xm+2, ym] not in estado['paredes'] and [xm+2, ym] not in posicao_monstros and [xm+2, ym] not in posicao_objetos and [xm+2, ym] != estado['pos_jogador'] and xm+2 < len(mapa[0]):
+                                xm += 2
+                        else:
+                            if estado['pos_jogador'][1] - ym < 0 and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and [xm, ym-2] not in estado['paredes'] and [xm, ym-2] not in posicao_monstros and [xm, ym-2] not in posicao_objetos and [xm, ym-2] != estado['pos_jogador'] and ym-2 >= 0:
+                                ym -= 2
+                            elif estado['pos_jogador'][1] - ym > 0 and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and [xm, ym+2] not in estado['paredes'] and [xm, ym+2] not in posicao_monstros and [xm, ym+2] not in posicao_objetos and [xm, ym+2] != estado['pos_jogador'] and ym+2 < len(mapa):
+                                ym += 2
+                    monstro['situação'] = 'esperar'
+
+                elif monstro['situação'] == 'esperar':
+                    monstro['situação'] = 'avançar'
+
 
         if [xm, ym] != monstro['posicao']:
             posicao_monstros.remove(monstro['posicao'])
             monstro['posicao'] = [xm, ym]
             posicao_monstros.append(monstro['posicao'])
+
+
 
 def atualiza_estado(estado, tecla):
     estado['mensagem'] = ''

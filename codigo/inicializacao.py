@@ -218,17 +218,30 @@ def inicializa_estado():
         posicoes_ocupadas.append(objeto['posicao'])
 
     monstros = []
-    monstros += gera_objetos(3, MONSTRO, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(2, MONSTRO1, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(3, MONSTRO2, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(2, MONSTRO3, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
     for monstro in monstros:
-        monstro['vida'] = 5
-        monstro['probabilidade de ataque'] = 0.3
+        if monstro['tipo'] == MONSTRO1:
+            monstro['vida'] = 5
+            monstro['probabilidade de ataque'] = 0.2
+
+        elif monstro['tipo'] == MONSTRO2:
+            monstro['vida'] = 3
+            monstro['probabilidade de ataque'] = 0.5
+            monstro['eixo'] = None
+
+        elif monstro['tipo'] == MONSTRO3:
+            monstro['vida'] = 2
+            monstro['probabilidade de ataque'] = 0.6
+            monstro['situação'] = None
     print(monstros)
 
     return {
         'tela_atual': TELA_JOGO,
         'pos_jogador': pos_jogador,
-        'vidas': 5,  # Quantidade atual de vidas do jogador - ele pode perder vidas ao colidir com espinhos ou ganhar vidas ao pegar corações
-        'max_vidas': 5,  # Quantidade máxima de vidas que o jogador pode ter - o valor da chave 'vidas' nunca pode ser maior que o valor da chave 'max_vidas'
+        'vidas': 5,  
+        'max_vidas': 5,  
         'objetos': objetos,
         'paredes': paredes,
         'monstros': monstros,
