@@ -47,27 +47,94 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
 
     motor.mostra_janela(janela)
 
-
-
-def atualiza_estado(estado, tecla):
-    estado['mensagem'] = ''
+def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
+    movimentos = [motor.SETA_ESQUERDA, motor.SETA_DIREITA, motor.SETA_CIMA, motor.SETA_BAIXO]
     mapa = estado['mapa']
     monstros = estado['monstros']
     posicao_monstros = []
     for monstro in monstros:
         posicao_monstros.append(monstro['posicao'])
 
+    posicao_objetos = []
+    for objeto in estado['objetos']:
+        posicao_objetos.append(objeto['posicao'])
+
+    x = posicao_inicial_jogador[0]
+    y = posicao_inicial_jogador[1]
+
+    for monstro in monstros:
+        xm = monstro['posicao'][0]
+        ym = monstro['posicao'][1]
+        
+        if tecla == motor.SETA_ESQUERDA or tecla == motor.SETA_DIREITA or tecla == motor.SETA_CIMA or tecla == motor.SETA_BAIXO:
+            movimento = random.choice(movimentos)
+        
+        if tecla == motor.SETA_ESQUERDA:
+            if [x-1, y] != [xm, ym]:
+                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                    xm -= 1
+                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                    xm += 1
+                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                    ym -= 1
+                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                    ym += 1
+
+        elif tecla == motor.SETA_DIREITA:
+            if [x+1, y] != [xm, ym]:
+                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                    xm -= 1
+                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                    xm += 1
+                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                    ym -= 1
+                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                    ym += 1
+
+        elif tecla == motor.SETA_CIMA:
+            if [x, y-1] != [xm, ym]:
+                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                    xm -= 1
+                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                    xm += 1
+                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                    ym -= 1
+                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                    ym += 1
+
+        elif tecla == motor.SETA_BAIXO:
+            if [x, y+1] != [xm, ym]:
+                if movimento == motor.SETA_ESQUERDA and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
+                    xm -= 1
+                elif movimento == motor.SETA_DIREITA and [xm+1, ym] not in estado['paredes'] and [xm+1, ym] not in posicao_monstros and [xm+1, ym] not in posicao_objetos and [xm+1, ym] != estado['pos_jogador'] and xm+1 < len(mapa[0]):
+                    xm += 1
+                elif movimento == motor.SETA_CIMA and [xm, ym-1] not in estado['paredes'] and [xm, ym-1] not in posicao_monstros and [xm, ym-1] not in posicao_objetos and [xm, ym-1] != estado['pos_jogador'] and ym-1 >= 0:
+                    ym -= 1
+                elif movimento == motor.SETA_BAIXO and [xm, ym+1] not in estado['paredes'] and [xm, ym+1] not in posicao_monstros and [xm, ym+1] not in posicao_objetos and [xm, ym+1] != estado['pos_jogador'] and ym+1 < len(mapa):
+                    ym += 1
+
+        if [xm, ym] != monstro['posicao']:
+            posicao_monstros.remove(monstro['posicao'])
+            monstro['posicao'] = [xm, ym]
+            posicao_monstros.append(monstro['posicao'])
+
+def atualiza_estado(estado, tecla):
+    estado['mensagem'] = ''
+    movimentos = [motor.SETA_ESQUERDA, motor.SETA_DIREITA, motor.SETA_CIMA, motor.SETA_BAIXO]
+    mapa = estado['mapa']
+    monstros = estado['monstros']
+    posicao_monstros = []
+    for monstro in monstros:
+        posicao_monstros.append(monstro['posicao'])
 
     x = estado['pos_jogador'][0]
     y = estado['pos_jogador'][1]
-
+    posicao_inicial_jogador = [x, y]
     
     if tecla == motor.SETA_ESQUERDA:
-        if [x-1, y] not in estado['paredes'] and [x-1, y] not in posicao_monstros:
-            if x-1 >= 0:
-                x -= 1
+        if [x-1, y] not in estado['paredes'] and [x-1, y] not in posicao_monstros and x-1 >= 0:
+            x -= 1
         elif [x-1, y] in posicao_monstros:
-            estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
                 estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
@@ -76,22 +143,20 @@ def atualiza_estado(estado, tecla):
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x+1, y]:
+                    if monstro['posicao'] == [x-1, y]:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
-                            estado['mensagem'] = "O monstro foi vencido"
+                            estado['mensagem'] = "Você matou o monstro"
                         else:
-                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
+                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_DIREITA:
-        if [x+1, y] not in estado['paredes'] and [x+1, y] not in posicao_monstros:
-            if x+1 < len(mapa[0]):
+        if [x+1, y] not in estado['paredes'] and [x+1, y] not in posicao_monstros and x+1 < len(mapa[0]):
                 x += 1
         elif [x+1, y] in posicao_monstros:
-            estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
                 estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
@@ -104,18 +169,16 @@ def atualiza_estado(estado, tecla):
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
-                            estado['mensagem'] = "O monstro foi vencido"
+                            estado['mensagem'] = "Você matou o monstro"
                         else:
-                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
+                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
-                  
+
     elif tecla == motor.SETA_CIMA:
-        if [x, y-1] not in estado['paredes'] and [x, y-1] not in posicao_monstros:
-            if y-1 >= 0:
+        if [x, y-1] not in estado['paredes'] and [x, y-1] not in posicao_monstros and y-1 >= 0:
                 y -= 1
         elif [x, y-1] in posicao_monstros:
-            estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
                 estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
@@ -124,22 +187,20 @@ def atualiza_estado(estado, tecla):
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x+1, y]:
+                    if monstro['posicao'] == [x, y-1]:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
-                            estado['mensagem'] = "O monstro foi vencido"
+                            estado['mensagem'] = "Você matou o monstro"
                         else:
-                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
+                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_BAIXO:
-        if [x, y+1] not in estado['paredes'] and [x, y+1] not in posicao_monstros:
-            if y+1 < len(mapa):
+        if [x, y+1] not in estado['paredes'] and [x, y+1] not in posicao_monstros and y+1 < len(mapa):
                 y += 1
         elif [x, y+1] in posicao_monstros:
-            estado['mensagem'] = "Você não pode se mover nessa direção"
             numero = random.random()
             if numero < 0.3:
                 estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
@@ -148,15 +209,16 @@ def atualiza_estado(estado, tecla):
                     estado['tela_atual'] = SAIR
             else:
                 for monstro in monstros:
-                    if monstro['posicao'] == [x+1, y]:
+                    if monstro['posicao'] == [x, y+1]:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
-                            estado['mensagem'] = "O monstro foi vencido"
+                            estado['mensagem'] = "Você matou o monstro"
                         else:
-                            estado['mensagem'] = "Você atacou e o monstro perdeu uma vida"
+                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
+
 
     if [x, y] != estado['pos_jogador']:
         estado['pos_jogador'] = [x, y]
@@ -180,9 +242,10 @@ def atualiza_estado(estado, tecla):
                         estado['vidas'] += 1
                         estado['mensagem'] = "Você ganhou uma vida"
 
-                    estado['objetos'].remove(objeto)
-                
+                    estado['objetos'].remove(objeto) 
 
+    movimento_dos_monstros(estado, tecla, posicao_inicial_jogador)
+                
     if tecla == 'i':
         estado['tela_atual'] = TELA_INVENTARIO
 
