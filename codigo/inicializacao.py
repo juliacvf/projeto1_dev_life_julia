@@ -238,7 +238,7 @@ def inicializa_estado():
     print(monstros)
 
     return {
-        'tela_atual': TELA_JOGO,
+        'tela_atual': TELA_INICIAL,
         'pos_jogador': pos_jogador,
         'vidas': 5,  
         'max_vidas': 5,  

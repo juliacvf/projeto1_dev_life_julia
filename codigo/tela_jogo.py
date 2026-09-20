@@ -4,46 +4,44 @@ import random
 
 def desenha_tela(janela, estado, altura_tela, largura_tela):
     motor.preenche_fundo(janela, PRETO)
+    mapa = estado['mapa']
+    altura_mapa = len(mapa)
+    largura_mapa = len(mapa[0])
+    inicio_x = (largura_tela - largura_mapa) // 2
+    inicio_y = (altura_tela - altura_mapa) // 2
 
-    if estado['tela_atual'] == TELA_JOGO:
-        mapa = estado['mapa']
-        altura_mapa = len(mapa)
-        largura_mapa = len(mapa[0])
-        inicio_x = (largura_tela - largura_mapa) // 2
-        inicio_y = (altura_tela - altura_mapa) // 2
+    for y in range(altura_mapa):
+        for x in range(largura_mapa):
+            motor.desenha_string(janela, inicio_x + x, inicio_y + y, ' ', VERDE_ESCURO, VERDE_ESCURO)
 
-        for y in range(altura_mapa):
-            for x in range(largura_mapa):
-                motor.desenha_string(janela, inicio_x + x, inicio_y + y, ' ', VERDE_ESCURO, VERDE_ESCURO)
+    for y in range(altura_mapa):
+        for x in range(largura_mapa):
+            posicao = [x, y]
 
-        for y in range(altura_mapa):
-            for x in range(largura_mapa):
-                posicao = [x, y]
+            if posicao == estado['pos_jogador']:
+                motor.desenha_string(janela, inicio_x + x, inicio_y + y, JOGADOR, VERDE_ESCURO, AZUL)
 
-                if posicao == estado['pos_jogador']:
-                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, JOGADOR, VERDE_ESCURO, AZUL)
+            for objeto in estado['objetos']:
+                if posicao == objeto['posicao']:
+                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
 
-                for objeto in estado['objetos']:
-                    if posicao == objeto['posicao']:
-                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
+            for parede in estado['paredes']:
+                if posicao == parede:
+                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
 
-                for parede in estado['paredes']:
-                    if posicao == parede:
-                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
+            for monstro in estado['monstros']:
+                if posicao == monstro['posicao']:
+                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
 
-                for monstro in estado['monstros']:
-                    if posicao == monstro['posicao']:
-                        motor.desenha_string(janela, inicio_x + x, inicio_y + y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
+    for x in range(estado['max_vidas']):
+        if x < estado['vidas']:
+            cor = VERMELHO
+        else:
+            cor = BRANCO
+        motor.desenha_string(janela, x, 0, CORACAO, PRETO, cor)
 
-        for x in range(estado['max_vidas']):
-            if x < estado['vidas']:
-                cor = VERMELHO
-            else:
-                cor = BRANCO
-            motor.desenha_string(janela, x, 0, CORACAO, PRETO, cor)
-
-        mensagem = estado['mensagem']
-        motor.desenha_string(janela, 0, altura_tela - 1, mensagem, PRETO, AMARELO)
+    mensagem = estado['mensagem']
+    motor.desenha_string(janela, 0, altura_tela - 1, mensagem, PRETO, AMARELO)
 
     motor.mostra_janela(janela)
 
@@ -187,7 +185,7 @@ def atualiza_estado(estado, tecla):
     x = estado['pos_jogador'][0]
     y = estado['pos_jogador'][1]
     posicao_inicial_jogador = [x, y]
-    
+
     if tecla == motor.SETA_ESQUERDA:
         if [x-1, y] not in estado['paredes'] and [x-1, y] not in posicao_monstros and x-1 >= 0:
             x -= 1
