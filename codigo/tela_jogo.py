@@ -1,6 +1,8 @@
 from constantes import *
 import motor_grafico as motor
-import random   
+import random
+from inicializacao import gera_objetos
+from inicializacao import gera_posicao_desocupada
 
 def desenha_tela(janela, estado, altura_tela, largura_tela):
     motor.preenche_fundo(janela, PRETO)
@@ -9,6 +11,7 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
     largura_mapa = len(mapa[0])
     inicio_x = (largura_tela - largura_mapa) // 2
     inicio_y = (altura_tela - altura_mapa) // 2
+
 
     for y in range(altura_mapa):
         for x in range(largura_mapa):
@@ -39,6 +42,10 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
         else:
             cor = BRANCO
         motor.desenha_string(janela, x, 0, CORACAO, PRETO, cor)
+
+    nivel = estado['nivel'] 
+    experiencia = estado['experiencia']
+    motor.desenha_string(janela, 0, 1, f'Nível {nivel}: {experiencia}', PRETO, AMARELO)
 
     mensagem = estado['mensagem']
     motor.desenha_string(janela, 0, altura_tela - 1, mensagem, PRETO, AMARELO)
@@ -85,7 +92,7 @@ def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
                 distancia_horizontal = abs(xm - estado['pos_jogador'][0])
                 distancia_vertical = abs(ym - estado['pos_jogador'][1])
 
-                if monstro['eixo'] is None:
+                if monstro['eixo'] == None:
                     if distancia_horizontal > distancia_vertical:
                         if estado['pos_jogador'][0] - xm < 0 and [xm-1, ym] not in estado['paredes'] and [xm-1, ym] not in posicao_monstros and [xm-1, ym] not in posicao_objetos and [xm-1, ym] != estado['pos_jogador'] and xm-1 >= 0:
                             xm -= 1
@@ -133,7 +140,7 @@ def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
                 distancias = ['horizontal', 'vertical']
                 situacao = ['esperar', 'avançar']
 
-                if monstro['situação'] is None:
+                if monstro['situação'] == None:
                     situação = random.choice(situacao)
                     monstro['situação'] = situação
 
@@ -176,11 +183,23 @@ def movimento_dos_monstros(estado, tecla, posicao_inicial_jogador):
 def atualiza_estado(estado, tecla):
     estado['mensagem'] = ''
     movimentos = [motor.SETA_ESQUERDA, motor.SETA_DIREITA, motor.SETA_CIMA, motor.SETA_BAIXO]
+    lista_monstros = [MONSTRO1, MONSTRO2, MONSTRO3]
     mapa = estado['mapa']
     monstros = estado['monstros']
+    altura_mapa = len(mapa)
+    largura_mapa = len(mapa[0])
+    objetos = estado['objetos']
+
+    posicoes_ocupadas = []
+    posicoes_ocupadas.append(estado['pos_jogador'])
+    posicoes_ocupadas.append(estado['paredes'])
+    for objeto in objetos:
+        posicoes_ocupadas.append(objeto['posicao'])
+
     posicao_monstros = []
     for monstro in monstros:
         posicao_monstros.append(monstro['posicao'])
+        posicoes_ocupadas.append(monstro['posicao'])
 
     x = estado['pos_jogador'][0]
     y = estado['pos_jogador'][1]
@@ -189,44 +208,140 @@ def atualiza_estado(estado, tecla):
     if tecla == motor.SETA_ESQUERDA:
         if [x-1, y] not in estado['paredes'] and [x-1, y] not in posicao_monstros and x-1 >= 0:
             x -= 1
+
         elif [x-1, y] in posicao_monstros:
-            numero = random.random()
-            if numero < 0.3:
-                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-                estado['vidas'] -= 1
-                if estado['vidas'] == 0:
-                    estado['tela_atual'] = SAIR
-            else:
-                for monstro in monstros:
-                    if monstro['posicao'] == [x-1, y]:
+            for monstro in monstros:
+                if [x-1, y] == monstro['posicao']:
+                    numero = random.random()
+                    if numero < 0.2 and monstro['tipo'] == MONSTRO1:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.4 and monstro['tipo'] == MONSTRO2:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.6 and monstro['tipo'] == MONSTRO3:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    else:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
                             estado['mensagem'] = "Você matou o monstro"
+
+                            if monstro['tipo'] == MONSTRO1:
+                                estado['experiencia'] += 2
+                            elif monstro['tipo'] == MONSTRO2:
+                                estado['experiencia'] += 3
+                            elif monstro['tipo'] == MONSTRO3:
+                                estado['experiencia'] += 5
+
                         else:
-                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
+                            estado['mensagem'] = f"Você atacou o monstro e agora ele tem {monstro['vida']} vidas"
+
+                        if estado['experiencia'] >= 10:
+                            estado['nivel'] += 1
+
+                            for i in range(4):
+                                monstro_sorteado = random.choice(lista_monstros)
+                                novo_monstro = []
+                                novo_monstro += gera_objetos(1, monstro_sorteado, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+                                for monstro in novo_monstro:
+                                    if monstro_sorteado == MONSTRO1:
+                                        monstro['vida'] = 5
+                                        monstro['probabilidade de ataque'] = 0.2
+                                    if monstro_sorteado == MONSTRO2:
+                                        monstro['vida'] = 3
+                                        monstro['probabilidade de ataque'] = 0.4
+                                        monstro['eixo'] = None
+                                    elif monstro_sorteado == MONSTRO3:
+                                        monstro['vida'] = 2
+                                        monstro['probabilidade de ataque'] = 0.6
+                                        monstro['situação'] = None
+                                    monstros.append(monstro)
+
+                            objetos += gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
+
+                            estado['experiencia'] -= 10
+
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
     elif tecla == motor.SETA_DIREITA:
         if [x+1, y] not in estado['paredes'] and [x+1, y] not in posicao_monstros and x+1 < len(mapa[0]):
                 x += 1
+
         elif [x+1, y] in posicao_monstros:
-            numero = random.random()
-            if numero < 0.3:
-                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-                estado['vidas'] -= 1
-                if estado['vidas'] == 0:
-                    estado['tela_atual'] = SAIR
-            else:
-                for monstro in monstros:
-                    if monstro['posicao'] == [x+1, y]:
+            for monstro in monstros:
+                if [x+1, y] == monstro['posicao']:
+                    numero = random.random()
+                    if numero < 0.2 and monstro['tipo'] == MONSTRO1:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.4 and monstro['tipo'] == MONSTRO2:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.6 and monstro['tipo'] == MONSTRO3:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    else:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
                             estado['mensagem'] = "Você matou o monstro"
+
+                            if monstro['tipo'] == MONSTRO1:
+                                estado['experiencia'] += 2
+                            elif monstro['tipo'] == MONSTRO2:
+                                estado['experiencia'] += 3
+                            elif monstro['tipo'] == MONSTRO3:
+                                estado['experiencia'] += 5
+
                         else:
-                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
+                            estado['mensagem'] = f"Você atacou o monstro e agora ele tem {monstro['vida']} vidas"
+
+                        if estado['experiencia'] >= 10:
+                            estado['nivel'] += 1
+
+                            for i in range(4):
+                                monstro_sorteado = random.choice(lista_monstros)
+                                novo_monstro = []
+                                novo_monstro += gera_objetos(1, monstro_sorteado, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+                                for monstro in novo_monstro:
+                                    if monstro_sorteado == MONSTRO1:
+                                        monstro['vida'] = 5
+                                        monstro['probabilidade de ataque'] = 0.2
+                                    if monstro_sorteado == MONSTRO2:
+                                        monstro['vida'] = 3
+                                        monstro['probabilidade de ataque'] = 0.4
+                                        monstro['eixo'] = None
+                                    elif monstro_sorteado == MONSTRO3:
+                                        monstro['vida'] = 2
+                                        monstro['probabilidade de ataque'] = 0.6
+                                        monstro['situação'] = None
+                                    monstros.append(monstro)
+
+                            objetos += gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
+
+                            estado['experiencia'] -= 10
+
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
@@ -234,21 +349,68 @@ def atualiza_estado(estado, tecla):
         if [x, y-1] not in estado['paredes'] and [x, y-1] not in posicao_monstros and y-1 >= 0:
                 y -= 1
         elif [x, y-1] in posicao_monstros:
-            numero = random.random()
-            if numero < 0.3:
-                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-                estado['vidas'] -= 1
-                if estado['vidas'] == 0:
-                    estado['tela_atual'] = SAIR
-            else:
-                for monstro in monstros:
-                    if monstro['posicao'] == [x, y-1]:
+            for monstro in monstros:
+                if [x, y-1] == monstro['posicao']:
+                    numero = random.random()
+                    if numero < 0.2 and monstro['tipo'] == MONSTRO1:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.4 and monstro['tipo'] == MONSTRO2:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.6 and monstro['tipo'] == MONSTRO3:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    else:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
                             estado['mensagem'] = "Você matou o monstro"
+
+                            if monstro['tipo'] == MONSTRO1:
+                                estado['experiencia'] += 2
+                            elif monstro['tipo'] == MONSTRO2:
+                                estado['experiencia'] += 3
+                            elif monstro['tipo'] == MONSTRO3:
+                                estado['experiencia'] += 5
+
                         else:
-                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
+                            estado['mensagem'] = f"Você atacou o monstro e agora ele tem {monstro['vida']} vidas"
+
+                        if estado['experiencia'] >= 10:
+                            estado['nivel'] += 1
+
+                            for i in range(4):
+                                monstro_sorteado = random.choice(lista_monstros)
+                                novo_monstro = []
+                                novo_monstro += gera_objetos(1, monstro_sorteado, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+                                for monstro in novo_monstro:
+                                    if monstro_sorteado == MONSTRO1:
+                                        monstro['vida'] = 5
+                                        monstro['probabilidade de ataque'] = 0.2
+                                    if monstro_sorteado == MONSTRO2:
+                                        monstro['vida'] = 3
+                                        monstro['probabilidade de ataque'] = 0.4
+                                        monstro['eixo'] = None
+                                    elif monstro_sorteado == MONSTRO3:
+                                        monstro['vida'] = 2
+                                        monstro['probabilidade de ataque'] = 0.6
+                                        monstro['situação'] = None
+                                    monstros.append(monstro)
+
+                            objetos += gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
+
+                            estado['experiencia'] -= 10
+
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
@@ -256,21 +418,69 @@ def atualiza_estado(estado, tecla):
         if [x, y+1] not in estado['paredes'] and [x, y+1] not in posicao_monstros and y+1 < len(mapa):
                 y += 1
         elif [x, y+1] in posicao_monstros:
-            numero = random.random()
-            if numero < 0.3:
-                estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-                estado['vidas'] -= 1
-                if estado['vidas'] == 0:
-                    estado['tela_atual'] = SAIR
-            else:
-                for monstro in monstros:
-                    if monstro['posicao'] == [x, y+1]:
+            for monstro in monstros:
+                if [x, y+1] == monstro['posicao']:
+                    numero = random.random()
+                    if numero < 0.2 and monstro['tipo'] == MONSTRO1:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.4 and monstro['tipo'] == MONSTRO2:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    elif numero < 0.6 and monstro['tipo'] == MONSTRO3:
+                        estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
+                        estado['vidas'] -= 1
+                        if estado['vidas'] == 0:
+                            estado['tela_atual'] = TELA_GAME_OVER
+
+                    else:
                         monstro['vida'] -= 1
                         if monstro['vida'] == 0:
                             monstros.remove(monstro)
                             estado['mensagem'] = "Você matou o monstro"
+
+                            if monstro['tipo'] == MONSTRO1:
+                                estado['experiencia'] += 2
+                            elif monstro['tipo'] == MONSTRO2:
+                                estado['experiencia'] += 3
+                            elif monstro['tipo'] == MONSTRO3:
+                                estado['experiencia'] += 5
+
                         else:
-                            estado['mensagem'] = f"Você atacou e agora o monstro tem {monstro['vida']} vidas"
+                            estado['mensagem'] = f"Você atacou o monstro e agora ele tem {monstro['vida']} vidas"
+
+                        if estado['experiencia'] >= 10:
+                            estado['nivel'] += 1
+
+                            for i in range(4):
+                                monstro_sorteado = random.choice(lista_monstros)
+                                novo_monstro = []
+                                novo_monstro += gera_objetos(1, monstro_sorteado, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+                                for monstro in novo_monstro:
+                                    if monstro_sorteado == MONSTRO1:
+                                        monstro['vida'] = 5
+                                        monstro['probabilidade de ataque'] = 0.2
+                                    if monstro_sorteado == MONSTRO2:
+                                        monstro['vida'] = 3
+                                        monstro['probabilidade de ataque'] = 0.4
+                                        monstro['eixo'] = None
+                                    elif monstro_sorteado == MONSTRO3:
+                                        monstro['vida'] = 2
+                                        monstro['probabilidade de ataque'] = 0.6
+                                        monstro['situação'] = None
+                                    monstros.append(monstro)
+
+                            objetos += gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
+
+                            estado['experiencia'] -= 10
+
+
         else:
             estado['mensagem'] = "Você não pode se mover nessa direção"
 
@@ -287,7 +497,6 @@ def atualiza_estado(estado, tecla):
                         estado['mensagem'] = "Você perdeu uma vida"
                     else:
                         estado['vidas'] -= 1
-                        estado['mensagem'] = "Você perdeu todas as vidas"
                         estado['tela_atual'] = TELA_GAME_OVER
 
                 elif objeto['tipo'] == CORACAO:

@@ -1,5 +1,6 @@
 from constantes import *
 import motor_grafico as motor
+from inicializacao import inicializa_estado
 
 
 def desenha_tela(janela, estado, altura, largura):
@@ -13,6 +14,9 @@ def desenha_tela(janela, estado, altura, largura):
 
 def atualiza_estado(estado, tecla):
     if tecla == motor.ESPACO:
+        novo_estado = inicializa_estado()
+        estado.clear()
+        estado.update(novo_estado)
         estado['tela_atual'] = TELA_JOGO
     elif tecla == motor.SETA_BAIXO:
         estado['tela_atual'] = TELA_INSTRUCOES

@@ -68,7 +68,7 @@ def inicializa_estado():
         [' '] * 50,
         [' '] * 50,
     ]
-    print(mapa)
+    
 
     paredes = [
     # Sala superior esquerda — teto
@@ -195,7 +195,7 @@ def inicializa_estado():
     [43, 11], [44, 11], [45, 11], [46, 11],
 ]
 
-    print(paredes)
+    
     for parede in paredes:
         posicoes_ocupadas.append(parede)
         
@@ -205,7 +205,7 @@ def inicializa_estado():
     
     # Você pode colocar o jogador em outro lugar, se preferir
     pos_jogador = [largura_mapa//2, altura_mapa//2]  # Meio do mapa
-    print(pos_jogador)
+    
     
     # Cria outros objetos do mapa
     posicoes_ocupadas.append(pos_jogador)
@@ -213,7 +213,7 @@ def inicializa_estado():
     objetos = []
     objetos += gera_objetos(8, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
     objetos += gera_objetos(6, ESPINHO, VERDE_CLARO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    print(objetos)
+
     for objeto in objetos:
         posicoes_ocupadas.append(objeto['posicao'])
 
@@ -228,20 +228,25 @@ def inicializa_estado():
 
         elif monstro['tipo'] == MONSTRO2:
             monstro['vida'] = 3
-            monstro['probabilidade de ataque'] = 0.5
+            monstro['probabilidade de ataque'] = 0.4
             monstro['eixo'] = None
+    
 
         elif monstro['tipo'] == MONSTRO3:
             monstro['vida'] = 2
             monstro['probabilidade de ataque'] = 0.6
             monstro['situação'] = None
+
     print(monstros)
 
     return {
         'tela_atual': TELA_INICIAL,
         'pos_jogador': pos_jogador,
         'vidas': 5,  
-        'max_vidas': 5,  
+        'max_vidas': 5,
+        'experiencia': 0,
+        'max_experiencia': 10,
+        'nivel': 0,  
         'objetos': objetos,
         'paredes': paredes,
         'monstros': monstros,
