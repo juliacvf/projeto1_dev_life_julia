@@ -288,7 +288,7 @@ def atualiza_estado(estado, tecla):
                     else:
                         estado['vidas'] -= 1
                         estado['mensagem'] = "Você perdeu todas as vidas"
-                        estado['tela_atual'] = SAIR
+                        estado['tela_atual'] = TELA_GAME_OVER
 
                 elif objeto['tipo'] == CORACAO:
                     if estado['vidas'] == estado['max_vidas']:
