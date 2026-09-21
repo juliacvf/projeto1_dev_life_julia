@@ -47,29 +47,27 @@ def gera_objetos(quantidade, tipo, cor, largura_mapa, altura_mapa, posicoes_ocup
 
     return objetos
 
+def cria_mapa():
+    with open('mapa.txt', 'r') as arquivo:
+        mapa = arquivo.read().splitlines()
+
 
 def inicializa_estado():
     posicoes_ocupadas = []
 
-    mapa = [
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-        [' '] * 50,
-    ]
-    
+    with open('mapa.txt', 'r') as arquivo:
+        mapa = []
 
+        linhas = arquivo.read().splitlines()
+        for linha in linhas:
+            linha_mapa = []
+            for ponto in linha:
+                if ponto == '.':
+                    linha_mapa.append(' ')
+            mapa.append(linha_mapa)
+        
+    print(mapa)
+    
     paredes = [
     # Sala superior esquerda — teto
     [2, 1], [3, 1], [4, 1], [5, 1], [6, 1],
