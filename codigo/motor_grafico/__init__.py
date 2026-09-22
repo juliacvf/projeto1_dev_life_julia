@@ -8,7 +8,6 @@ from .constantes_do_motor import *
 # Opções disponíveis: 'curses' e 'pygame'
 MOTOR = 'curses'
 
-
 if MOTOR == 'curses':
     from . import motor_curses as motor
 elif MOTOR == 'pygame':

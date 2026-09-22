@@ -23,6 +23,7 @@ TELA_INVENTARIO = 2
 TELA_INICIAL = 3
 TELA_INSTRUCOES = 4
 TELA_GAME_OVER = 5
+SALA_SECRETA = 6
 
 # Objetos
 # As constantes abaixo são os caracteres que representam cada objeto no mapa.

@@ -9,32 +9,39 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
     mapa = estado['mapa']
     altura_mapa = len(mapa)
     largura_mapa = len(mapa[0])
-    inicio_x = (largura_tela - largura_mapa) // 2
-    inicio_y = (altura_tela - altura_mapa) // 2
+
+    largura_visivel = largura_tela - 1
+    altura_visivel = altura_tela - 1
 
 
-    for y in range(altura_mapa):
-        for x in range(largura_mapa):
-            motor.desenha_string(janela, inicio_x + x, inicio_y + y, ' ', VERDE_ESCURO, VERDE_ESCURO)
+    camera_x = estado['pos_jogador'][0] - largura_visivel//2
+    camera_y = estado['pos_jogador'][1] - altura_visivel//2
 
-    for y in range(altura_mapa):
-        for x in range(largura_mapa):
-            posicao = [x, y]
+    camera_x = max(0, min(camera_x, largura_mapa - largura_visivel))
+    camera_y = max(0, min(camera_y, altura_mapa - altura_visivel))
+
+    for y in range (altura_visivel): 
+        for x in range(largura_visivel):
+            x_mapa = camera_x + x
+            y_mapa = camera_y + y
+            posicao = [x_mapa, y_mapa]
+
+            motor.desenha_string(janela, x, y, ' ', VERDE_ESCURO, VERDE_ESCURO)
 
             if posicao == estado['pos_jogador']:
-                motor.desenha_string(janela, inicio_x + x, inicio_y + y, JOGADOR, VERDE_ESCURO, AZUL)
+                motor.desenha_string(janela, x, y, JOGADOR, VERDE_ESCURO, AZUL)
 
             for objeto in estado['objetos']:
                 if posicao == objeto['posicao']:
-                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
+                    motor.desenha_string(janela, x, y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
 
             for parede in estado['paredes']:
                 if posicao == parede:
-                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
+                    motor.desenha_string(janela, x, y, PAREDE, MARROM_MAIS_ESCURO, MARROM_ESCURO)
 
             for monstro in estado['monstros']:
                 if posicao == monstro['posicao']:
-                    motor.desenha_string(janela, inicio_x + x, inicio_y + y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
+                    motor.desenha_string(janela, x, y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
 
     for x in range(estado['max_vidas']):
         if x < estado['vidas']:

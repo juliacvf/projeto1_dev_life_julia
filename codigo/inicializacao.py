@@ -193,7 +193,6 @@ def inicializa_estado():
     [43, 11], [44, 11], [45, 11], [46, 11],
 ]
 
-    
     for parede in paredes:
         posicoes_ocupadas.append(parede)
         
