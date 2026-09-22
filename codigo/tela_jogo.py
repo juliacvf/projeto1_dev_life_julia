@@ -26,14 +26,14 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
             y_mapa = camera_y + y
             posicao = [x_mapa, y_mapa]
 
-            motor.desenha_string(janela, x, y, ' ', VERDE_ESCURO, VERDE_ESCURO)
+            motor.desenha_string(janela, x, y, ' ', VERDE_FLORESTA, VERDE_FLORESTA)
 
             if posicao == estado['pos_jogador']:
-                motor.desenha_string(janela, x, y, JOGADOR, VERDE_ESCURO, AZUL)
+                motor.desenha_string(janela, x, y, JOGADOR, VERDE_FLORESTA, AMARELO_DOURADO)
 
             for objeto in estado['objetos']:
                 if posicao == objeto['posicao']:
-                    motor.desenha_string(janela, x, y, objeto['tipo'], VERDE_ESCURO, objeto['cor'])
+                    motor.desenha_string(janela, x, y, objeto['tipo'], VERDE_FLORESTA, objeto['cor'])
 
             for parede in estado['paredes']:
                 if posicao == parede:
@@ -41,21 +41,26 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
 
             for monstro in estado['monstros']:
                 if posicao == monstro['posicao']:
-                    motor.desenha_string(janela, x, y, monstro['tipo'], VERDE_ESCURO, monstro['cor'])
+                    if monstro['tipo'] == MONSTRO1:
+                        motor.desenha_string(janela, x, y, monstro['tipo'], VERDE_FLORESTA, COR_MONSTRO1)
+                    elif monstro['tipo'] == MONSTRO2:
+                        motor.desenha_string(janela, x, y, monstro['tipo'], VERDE_FLORESTA, COR_MONSTRO2)
+                    elif monstro['tipo'] == MONSTRO3:
+                        motor.desenha_string(janela, x, y, monstro['tipo'], VERDE_FLORESTA, COR_MONSTRO3)
 
     for x in range(estado['max_vidas']):
         if x < estado['vidas']:
             cor = VERMELHO
         else:
             cor = BRANCO
-        motor.desenha_string(janela, x, 0, CORACAO, PRETO, cor)
+        motor.desenha_string(janela, x, 0, CORACAO, VERDE_FLORESTA, cor)
 
     nivel = estado['nivel'] 
     experiencia = estado['experiencia']
-    motor.desenha_string(janela, 0, 1, f'Nível {nivel}: {experiencia}', PRETO, AMARELO)
+    motor.desenha_string(janela, 0, 1, f'Nível {nivel}: {experiencia}', VERDE_FLORESTA, BRANCO)
 
     mensagem = estado['mensagem']
-    motor.desenha_string(janela, 0, altura_tela - 1, mensagem, PRETO, AMARELO)
+    motor.desenha_string(janela, 0, altura_tela - 1, mensagem, AZUL_ESCURO, BRANCO)
 
     motor.mostra_janela(janela)
 
