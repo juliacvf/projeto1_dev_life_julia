@@ -47,10 +47,6 @@ def gera_objetos(quantidade, tipo, cor, largura_mapa, altura_mapa, posicoes_ocup
 
     return objetos
 
-def cria_mapa():
-    with open('mapa.txt', 'r') as arquivo:
-        mapa = arquivo.read().splitlines()
-
 
 def inicializa_estado():
     posicoes_ocupadas = []
@@ -76,7 +72,6 @@ def inicializa_estado():
 
         mapa.append(linha_mapa)
         
-    print(mapa)
 
     for parede in paredes:
         posicoes_ocupadas.append(parede)
@@ -127,10 +122,8 @@ def inicializa_estado():
     
     for iten in itens:
         posicoes_ocupadas.append(iten['posicao'])
-        if iten['tipo'] == ESPADA or iten['tipo'] == MARTELO:
-            iten['status'] = 'desequipado'
 
-    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 0}
+    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 3}
 
     return {
         'tela_atual': TELA_INICIAL,
@@ -146,7 +139,6 @@ def inicializa_estado():
         'itens': itens,
         'mapa': mapa,
         'inventario': inventario,
-        'equipamento': None,
         'mensagem': '', # Use esta mensagem para mostrar mensagens ao jogador, como "Você perdeu uma vida" ou "Você ganhou uma vida"
     }
 
