@@ -234,6 +234,19 @@ def atualiza_estado(estado, tecla):
         posicao_monstros.append(monstro['posicao'])
         posicoes_ocupadas.append(monstro['posicao'])
 
+        if monstro['tipo'] == MONSTRO1:
+            monstro['vida'] = 5
+            monstro['probabilidade de ataque'] = 0.30
+
+        elif monstro['tipo'] == MONSTRO2:
+            monstro['vida'] = 3
+            monstro['probabilidade de ataque'] = 0.45
+
+        elif monstro['tipo'] == MONSTRO3:
+            monstro['vida'] = 2
+            monstro['probabilidade de ataque'] = 0.70
+
+
     posicao_itens = []
     for iten in itens:
         posicao_itens.append(iten['posicao'])
@@ -246,19 +259,19 @@ def atualiza_estado(estado, tecla):
 
     def batalha(monstro):
         numero = random.random()
-        if numero < 0.2 and monstro['tipo'] == MONSTRO1:
+        if numero < 0.30 and monstro['tipo'] == MONSTRO1:
             estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
             estado['vidas'] -= 1
             if estado['vidas'] == 0:
                 estado['tela_atual'] = TELA_GAME_OVER
 
-        elif numero < 0.4 and monstro['tipo'] == MONSTRO2:
+        elif numero < 0.45 and monstro['tipo'] == MONSTRO2:
             estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
             estado['vidas'] -= 1
             if estado['vidas'] == 0:
                 estado['tela_atual'] = TELA_GAME_OVER
 
-        elif numero < 0.6 and monstro['tipo'] == MONSTRO3:
+        elif numero < 0.70 and monstro['tipo'] == MONSTRO3:
             estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
             estado['vidas'] -= 1
             if estado['vidas'] == 0:
@@ -292,14 +305,14 @@ def atualiza_estado(estado, tecla):
                     for novo in novo_monstro:
                         if monstro_sorteado == MONSTRO1:
                             novo['vida'] = 5
-                            novo['probabilidade de ataque'] = 0.2
+                            novo['probabilidade de ataque'] = 0.30
                         elif monstro_sorteado == MONSTRO2:
                             novo['vida'] = 3
-                            novo['probabilidade de ataque'] = 0.4
+                            novo['probabilidade de ataque'] = 0.45
                             novo['eixo'] = None
                         elif monstro_sorteado == MONSTRO3:
                             novo['vida'] = 2
-                            novo['probabilidade de ataque'] = 0.6
+                            novo['probabilidade de ataque'] = 0.70
                             novo['situação'] = None
                         monstros.append(novo)
 
@@ -307,18 +320,29 @@ def atualiza_estado(estado, tecla):
                 itens.extend(gera_objetos(2, POCAO, COR_POCAO, largura_mapa, altura_mapa, posicoes_ocupadas))
                 itens.extend(gera_objetos(1, ELIXIR, COR_ELIXIR, largura_mapa, altura_mapa, posicoes_ocupadas))
                 itens.extend(gera_objetos(1, ESPADA, COR_ESPADA, largura_mapa, altura_mapa, posicoes_ocupadas))
+                itens.extend(gera_objetos(1, MARTELO, COR_ESPADA, largura_mapa, altura_mapa, posicoes_ocupadas))
+                
 
                 estado['experiencia'] -= 10
 
     def coleta_iten(iten):
         soma_itens = sum(estado['inventario'].values())
-        if soma_itens < 12:
+        if soma_itens < 6:
             tipo_iten = iten['tipo']
-            estado['inventario'][tipo_iten] += 1
-            estado['mensagem'] = 'Iten adicionado ao inventário'
-            itens.remove(iten) 
-            posicao_itens.remove(iten['posicao'])
-            posicoes_ocupadas.remove(iten['posicao'])
+            if tipo_iten == CHAVE and estado['inventario'][tipo_iten] + 1 == 3:
+                    estado['inventario'][tipo_iten] += 1
+                    estado['mensagem'] = 'Você desbloqueou a sala secreta'
+                    itens.remove(iten) 
+                    posicao_itens.remove(iten['posicao'])
+                    posicoes_ocupadas.remove(iten['posicao'])
+    
+            else:
+                estado['inventario'][tipo_iten] += 1
+                estado['mensagem'] = 'Iten adicionado ao inventário'
+                itens.remove(iten) 
+                posicao_itens.remove(iten['posicao'])
+                posicoes_ocupadas.remove(iten['posicao'])
+
         else:
             estado['mensagem'] = 'Seu inventário está cheio'
 
@@ -426,4 +450,63 @@ def atualiza_estado(estado, tecla):
 
     elif tecla == motor.ESCAPE or tecla =='q':
         estado['tela_atual'] = SAIR
+
+    elif tecla == 'p':
+        if estado['inventario']['⚗'] >= 1:
+            estado['inventario']['⚗'] -= 1
+            numero = random.random()
+            if numero <= 0.4:
+                estado['vidas'] -= 1
+                estado['max_vidas'] -= 1
+            else:
+                estado['max_vidas'] += 1
+                estado['vidas'] += 1
+
+        else:
+            estado['mensagem'] = 'Você não tem poções'
+
+    elif tecla == 'e':
+        if estado['inventario']['✦'] >= 1:
+            estado['inventario']['✦'] -= 1
+            estado['experiencia'] += 2
+
+        else:
+            estado['mensagem'] = 'Você não tem elixir'
+
+    elif tecla == 's':
+        if estado['inventario']['†'] >= 1:
+            estado['inventario']['†'] -= 1
+            for monstro in estado['monstros']:
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['probabilidade de ataque'] == 0.25
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['probabilidade de ataque'] == 0.40
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['probabilidade de ataque'] == 0.55
+
+        else:
+            estado['mensagem'] = 'Você não têm espadas'
+
+    elif tecla == 'h':
+        if estado['inventario']['⚒'] >= 1:
+            estado['inventario']['⚒'] -= 1
+            for monstro in estado['monstros']:
+
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['vida'] == 4
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['vida'] == 2
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['vida'] == 1
+        else:
+            estado['mensagem'] = 'Você não têm martelos'
+
+    elif tecla == 'k':
+        if estado['inventario']['⚿'] < 3:  
+            estado['mensagem'] = 'Você ainda não pode acessar a sala secreta'
+        else: 
+            estado['inventario']['⚿'] -= 3
+            estado['tela'] = SALA_SECRETA
+    
+
 

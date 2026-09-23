@@ -106,17 +106,16 @@ def inicializa_estado():
     for monstro in monstros:
         if monstro['tipo'] == MONSTRO1:
             monstro['vida'] = 5
-            monstro['probabilidade de ataque'] = 0.2
+            monstro['probabilidade de ataque'] = 0.30
 
         elif monstro['tipo'] == MONSTRO2:
             monstro['vida'] = 3
-            monstro['probabilidade de ataque'] = 0.4
+            monstro['probabilidade de ataque'] = 0.45
             monstro['eixo'] = None
-    
 
         elif monstro['tipo'] == MONSTRO3:
             monstro['vida'] = 2
-            monstro['probabilidade de ataque'] = 0.6
+            monstro['probabilidade de ataque'] = 0.70
             monstro['situação'] = None
 
     itens = []
