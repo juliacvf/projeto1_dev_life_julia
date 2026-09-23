@@ -2,6 +2,7 @@ from constantes import *
 import motor_grafico as motor
 from inicializacao import inicializa_estado
 from tela_jogo import movimento_dos_monstros
+from inicializacao import gera_objetos
 import random
 
 

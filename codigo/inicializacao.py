@@ -127,6 +127,8 @@ def inicializa_estado():
     
     for iten in itens:
         posicoes_ocupadas.append(iten['posicao'])
+        if iten['tipo'] == ESPADA or iten['tipo'] == MARTELO:
+            iten['status'] = 'desequipado'
 
     inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 0}
 
@@ -144,6 +146,7 @@ def inicializa_estado():
         'itens': itens,
         'mapa': mapa,
         'inventario': inventario,
+        'equipamento': None,
         'mensagem': '', # Use esta mensagem para mostrar mensagens ao jogador, como "Você perdeu uma vida" ou "Você ganhou uma vida"
     }
 

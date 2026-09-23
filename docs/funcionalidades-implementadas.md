@@ -59,7 +59,7 @@ No nível básico você deve entender o código fornecido e implementar as segui
 - [ ] Funcionalidade 4: Sala secreta;
 - [x] Funcionalidade 5: Sistema de experiência e níveis;
 - [x] Funcionalidade 6: Itens e inventário;
-- [ ] Funcionalidade 7: Equipamento e limite de mochila;
+- [x] Funcionalidade 7: Equipamento e limite de mochila;
 - [x] Funcionalidade 8: Mapa em arquivo;
 - [ ] Funcionalidade 9: Monstro cobrinha;
 - [x] Funcionalidade 10: Telas adicionais;
