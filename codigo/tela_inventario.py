@@ -71,33 +71,83 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = 'Você não tem elixir'
 
     elif tecla == 's':
-        if estado['inventario']['†'] >= -1:
+        if estado['equipamento'] is None:
+            if estado['inventario']['†'] >= 1:
                 estado['inventario']['†'] -= 1
+                estado['equipamento'] = 'espada'
+                estado['mensagem'] = 'Espada equipada'
                 for monstro in estado['monstros']:
                     if monstro['tipo'] == MONSTRO1:
                         monstro['probabilidade de ataque'] = 0.25
-                    if monstro['tipo'] == MONSTRO2:
+
+                    elif monstro['tipo'] == MONSTRO2:
                         monstro['probabilidade de ataque'] = 0.40
-                    if monstro['tipo'] == MONSTRO3:
+
+                    elif monstro['tipo'] == MONSTRO3:
                         monstro['probabilidade de ataque'] = 0.55
 
-        else:
-            estado['mensagem'] = 'Você não têm espadas'
+            else:
+                estado['mensagem'] = 'Você não tem espada para equipar'
 
+        elif estado['equipamento'] == 'espada':
+            estado['equipamento'] = None
+            estado['mensagem'] = 'Espada desequipada'
+
+            for monstro in estado['monstros']:
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['probabilidade de ataque'] = 0.30
+
+                elif monstro['tipo'] == MONSTRO2:
+                    monstro['probabilidade de ataque'] = 0.45
+
+                elif monstro['tipo'] == MONSTRO3:
+                    monstro['probabilidade de ataque'] = 0.70
+
+        else:
+            estado['mensagem'] = 'Você já possui outro item equipado'
 
     elif tecla == 'h':
-        if estado['inventario']['⚒'] >= 1:
+        if estado['equipamento'] is None:
+
+            if estado['inventario']['⚒'] >= 1:
                 estado['inventario']['⚒'] -= 1
+                estado['equipamento'] = 'martelo'
+                estado['mensagem'] = 'Martelo equipado'
+
                 for monstro in estado['monstros']:
                     if monstro['tipo'] == MONSTRO1:
-                        monstro['vida'] = 4
-                    if monstro['tipo'] == MONSTRO2:
-                        monstro['vida'] = 2
-                    if monstro['tipo'] == MONSTRO3:
-                        monstro['vida'] = 1
+                        monstro['max_vidas'] = 4
+
+                    elif monstro['tipo'] == MONSTRO2:
+                        monstro['max_vidas'] = 2
+
+                    elif monstro['tipo'] == MONSTRO3:
+                        monstro['max_vidas'] = 1
+
+                    if monstro['vida'] > monstro['max_vidas']:
+                        monstro['vida'] = monstro['max_vidas']
+
+            else:
+                estado['mensagem'] = 'Você não tem martelo para equipar'
+
+        elif estado['equipamento'] == 'martelo':
+            estado['equipamento'] = None
+            estado['mensagem'] = 'Martelo desequipado'
+
+            for monstro in estado['monstros']:
+                if monstro['tipo'] == MONSTRO1:
+                    monstro['max_vidas'] = 5
+
+                elif monstro['tipo'] == MONSTRO2:
+                    monstro['max_vidas'] = 3
+
+                elif monstro['tipo'] == MONSTRO3:
+                    monstro['max_vidas'] = 2
+
 
         else:
-            estado['mensagem'] = 'Você não têm martelos'
+            estado['mensagem'] = 'Você já possui outro item equipado'
+        
 
     elif tecla == 'k':
         if estado['inventario']['⚿'] < 3:  

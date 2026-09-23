@@ -89,41 +89,45 @@ def inicializa_estado():
 
     objetos = []
     objetos += gera_objetos(10, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    objetos += gera_objetos(16, ESPINHO, VERDE_CLARO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    objetos += gera_objetos(10, ESPINHO, VERDE_CLARO, largura_mapa, altura_mapa, posicoes_ocupadas)
 
     for objeto in objetos:
         posicoes_ocupadas.append(objeto['posicao'])
 
     monstros = []
-    monstros += gera_objetos(10, MONSTRO1, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    monstros += gera_objetos(5, MONSTRO2, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    monstros += gera_objetos(5, MONSTRO3, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(8, MONSTRO1, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(7, MONSTRO2, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    monstros += gera_objetos(7, MONSTRO3, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
     for monstro in monstros:
         if monstro['tipo'] == MONSTRO1:
             monstro['vida'] = 5
+            monstro['max_vidas'] = 5
             monstro['probabilidade de ataque'] = 0.30
 
         elif monstro['tipo'] == MONSTRO2:
             monstro['vida'] = 3
+            monstro['max_vidas'] = 3
             monstro['probabilidade de ataque'] = 0.45
             monstro['eixo'] = None
 
         elif monstro['tipo'] == MONSTRO3:
             monstro['vida'] = 2
+            monstro['max_vidas'] = 2
             monstro['probabilidade de ataque'] = 0.70
             monstro['situação'] = None
 
     itens = []
-    itens += gera_objetos(6, POCAO, COR_POCAO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    itens += gera_objetos(5, ELIXIR, COR_ELIXIR, largura_mapa, altura_mapa, posicoes_ocupadas)
-    itens += gera_objetos(3, ESPADA, COR_ESPADA, largura_mapa, altura_mapa, posicoes_ocupadas)
-    itens += gera_objetos(3, MARTELO, COR_MARTELO, largura_mapa, altura_mapa, posicoes_ocupadas)
-    itens += gera_objetos(4, CHAVE, COR_CHAVE, largura_mapa, altura_mapa, posicoes_ocupadas)
+    itens += gera_objetos(4, POCAO, COR_POCAO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    itens += gera_objetos(3, ELIXIR, COR_ELIXIR, largura_mapa, altura_mapa, posicoes_ocupadas)
+    itens += gera_objetos(2, ESPADA, COR_ESPADA, largura_mapa, altura_mapa, posicoes_ocupadas)
+    itens += gera_objetos(2, MARTELO, COR_MARTELO, largura_mapa, altura_mapa, posicoes_ocupadas)
+    itens += gera_objetos(3, CHAVE, COR_CHAVE, largura_mapa, altura_mapa, posicoes_ocupadas)
     
     for iten in itens:
         posicoes_ocupadas.append(iten['posicao'])
+        iten['status'] = None
 
-    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 3}
+    inventario = {'✦': 0, '⚗': 0, '†': 1, '⚒': 1, '⚿': 0}
 
     return {
         'tela_atual': TELA_INICIAL,
@@ -139,6 +143,7 @@ def inicializa_estado():
         'itens': itens,
         'mapa': mapa,
         'inventario': inventario,
+        'equipamento': None,
         'mensagem': '', # Use esta mensagem para mostrar mensagens ao jogador, como "Você perdeu uma vida" ou "Você ganhou uma vida"
     }
 
