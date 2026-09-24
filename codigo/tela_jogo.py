@@ -30,7 +30,7 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
             motor.desenha_string(janela, x, y, ' ', VERDE_FLORESTA, VERDE_FLORESTA)
 
             if posicao == estado['pos_jogador']:
-                motor.desenha_string(janela, x, y, JOGADOR, VERDE_FLORESTA, AMARELO_DOURADO)
+                motor.desenha_string(janela, x, y, JOGADOR, VERDE_FLORESTA, PRETO)
 
             for objeto in estado['objetos']:
                 if posicao == objeto['posicao']:
@@ -313,6 +313,11 @@ def atualiza_estado(estado, tecla):
                             novo['max_vidas'] -= 1
                             novo['vida'] = novo['max_vidas']
 
+                        elif estado['equipamento'] == 'martelo':
+                            novo['max_vidas'] -= 1
+                            novo['vida'] = novo['max_vidas']
+                            novo['vida_reduzida_martelo'] = True
+
                         monstros.append(novo)
 
                 objetos.extend(gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas))
@@ -458,9 +463,11 @@ def atualiza_estado(estado, tecla):
             if numero <= 0.4:
                 estado['vidas'] -= 1
                 estado['max_vidas'] -= 1
+                estado['mensagem'] = 'Sua quantidade máxima de vidas diminuiu'
             else:
                 estado['max_vidas'] += 1
                 estado['vidas'] += 1
+                estado['mensagem'] = 'Sua quantidade máxima de vidas aumentou'
 
         else:
             estado['mensagem'] = 'Você não tem poções'
@@ -469,6 +476,7 @@ def atualiza_estado(estado, tecla):
         if estado['inventario']['✦'] >= 1:
             estado['inventario']['✦'] -= 1
             estado['experiencia'] += 2
+            estado['mensagem'] = 'Você ganhou 2 pontos de experiência'
 
         else:
             estado['mensagem'] = 'Você não tem elixir'
@@ -512,32 +520,38 @@ def atualiza_estado(estado, tecla):
     elif tecla == 'h':
         if estado['equipamento'] is None:
 
-            if estado['inventario']['⚒'] >= 1:
-                estado['inventario']['⚒'] -= 1
+            if estado['inventario'][MARTELO] >= 1:
+                estado['inventario'][MARTELO] -= 1
                 estado['equipamento'] = 'martelo'
                 estado['mensagem'] = 'Martelo equipado'
 
                 for monstro in estado['monstros']:
+
                     if monstro['tipo'] == MONSTRO1:
-                        monstro['max_vidas'] = 4
+                        novo_maximo = 4
 
                     elif monstro['tipo'] == MONSTRO2:
-                        monstro['max_vidas'] = 2
+                        novo_maximo = 2
 
                     elif monstro['tipo'] == MONSTRO3:
-                        monstro['max_vidas'] = 1
+                        novo_maximo = 1
 
-                    if monstro['vida'] > monstro['max_vidas']:
-                        monstro['vida'] = monstro['max_vidas']
+                    monstro['vida_reduzida_martelo'] = False
+                    monstro['max_vidas'] = novo_maximo
+
+                    if monstro['vida'] > novo_maximo:
+                        monstro['vida'] = novo_maximo
+                        monstro['vida_reduzida_martelo'] = True
 
             else:
-                estado['mensagem'] = 'Você não tem martelo para equipar'
+                estado['mensagem'] = 'Você não tem martelo para equipar'            
 
         elif estado['equipamento'] == 'martelo':
             estado['equipamento'] = None
             estado['mensagem'] = 'Martelo desequipado'
 
             for monstro in estado['monstros']:
+
                 if monstro['tipo'] == MONSTRO1:
                     monstro['max_vidas'] = 5
 
@@ -547,9 +561,13 @@ def atualiza_estado(estado, tecla):
                 elif monstro['tipo'] == MONSTRO3:
                     monstro['max_vidas'] = 2
 
+                if monstro['vida_reduzida_martelo'] == True:
+                    monstro['vida'] += 1
+                    monstro['vida_reduzida_martelo'] = False
 
         else:
             estado['mensagem'] = 'Você já possui outro item equipado'
+        
 
     elif tecla == 'k':
         if estado['inventario']['⚿'] < 3:  

@@ -7,8 +7,8 @@ def desenha_tela(janela, estado, altura, largura):
     itens = estado['itens']
 
     motor.preenche_fundo(janela, MARROM_ESCURO)
-    motor.desenha_string(janela, (largura-(len('inventario')))//2, 5, 'INVENTÁRIO', MARROM_ESCURO, AMARELO_DOURADO)
-    motor.desenha_string(janela, (largura-(len('----------')))//2, 6, '----------', MARROM_ESCURO, AMARELO_DOURADO)
+    motor.desenha_string(janela, (largura-(len('inventario')))//2, 3, 'INVENTÁRIO', MARROM_ESCURO, AMARELO_DOURADO)
+    motor.desenha_string(janela, (largura-(len('----------')))//2, 4, '----------', MARROM_ESCURO, AMARELO_DOURADO)
 
     for iten in itens:
         if iten['tipo'] == POCAO:
@@ -54,9 +54,12 @@ def atualiza_estado(estado, tecla):
             if numero <= 0.4:
                 estado['vidas'] -= 1
                 estado['max_vidas'] -= 1
+                estado['mensagem'] = 'Sua quantidade máxima de vidas diminuiu'
+        
             else:
                 estado['max_vidas'] += 1
                 estado['vidas'] += 1
+                estado['mensagem'] = 'Sua quantidade máxima de vidas aumentou'
 
         else:
             estado['mensagem'] = 'Você não tem poções'
@@ -65,6 +68,7 @@ def atualiza_estado(estado, tecla):
         if estado['inventario']['✦'] >= 1:
             estado['inventario']['✦'] -= 1
             estado['experiencia'] += 2
+            estado['mensagem'] = 'Você ganhou 2 pontos de experiência'
 
         else:
             estado['mensagem'] = 'Você não tem elixir'

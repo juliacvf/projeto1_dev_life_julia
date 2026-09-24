@@ -5,7 +5,7 @@ from inicializacao import inicializa_estado
 
 def desenha_tela(janela, estado, altura, largura):
     motor.preenche_fundo(janela, AZUL_ESCURO)
-    motor.desenha_string(janela, (largura-len('◆ entre monstros e muros ◆'))//2, 5, '◆ ENTRE MONSTROS E MUROS ◆', AZUL_ESCURO, AMARELO_DOURADO)
+    motor.desenha_string(janela, (largura-len('◆ entre monstros e muros ◆'))//2, 3, '◆ ENTRE MONSTROS E MUROS ◆', AZUL_ESCURO, AMARELO_DOURADO)
     motor.desenha_string(janela, (largura-len('jogar - ↑'))//2, (altura//2)-1, 'JOGAR - ↑', AZUL_ESCURO, BRANCO)
     motor.desenha_string(janela, (largura-len('instrucoes - ↓'))//2, (altura//2)+1, 'INSTRUÇÕES - ↓', AZUL_ESCURO, BRANCO)
 

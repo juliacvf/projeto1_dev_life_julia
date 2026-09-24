@@ -20,8 +20,8 @@ MARROM = [157, 105, 62]
 MARROM_ESCURO = [110, 70, 42]
 MARROM_MAIS_ESCURO = [68, 43, 29]
 COR_MONSTRO1 = [73, 170, 210]
-COR_MONSTRO2 = [165, 85, 190]  
-COR_MONSTRO3 = [235, 105, 35]
+COR_MONSTRO3 = [165, 85, 190]  
+COR_MONSTRO2 = [235, 105, 35]
 COR_POCAO = [255, 80, 170]
 COR_ELIXIR = [60, 230, 230]
 COR_ESPADA = [220, 225, 235]
@@ -46,12 +46,12 @@ TELA_SALA_SECRETA = 6
 # Objetos
 # As constantes abaixo são os caracteres que representam cada objeto no mapa.
 # Você pode mudar os caracteres para o que preferir.
-JOGADOR = '@'
+JOGADOR = '☺'
 CORACAO = '♥'
-ESPINHO = '#'
+ESPINHO = '▲'
 MONSTRO1 = '♣'
-MONSTRO2 = '♠'
-MONSTRO3 = 'X'
+MONSTRO2 = 'Ψ'
+MONSTRO3 = '☠'
 PAREDE = '▣'
 ELIXIR = '✦'
 POCAO = '⚗'

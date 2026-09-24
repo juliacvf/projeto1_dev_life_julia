@@ -99,6 +99,8 @@ def inicializa_estado():
     monstros += gera_objetos(7, MONSTRO2, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
     monstros += gera_objetos(7, MONSTRO3, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
     for monstro in monstros:
+        monstro['vida_reduzida_martelo'] = False
+        
         if monstro['tipo'] == MONSTRO1:
             monstro['vida'] = 5
             monstro['max_vidas'] = 5
@@ -127,7 +129,7 @@ def inicializa_estado():
         posicoes_ocupadas.append(iten['posicao'])
         iten['status'] = None
 
-    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 3}
+    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 0}
 
 
     pos_jogador_sala = [10, 10]

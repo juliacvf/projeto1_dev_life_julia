@@ -4,8 +4,8 @@ import motor_grafico as motor
 
 def desenha_tela(janela, estado, altura, largura):
     motor.preenche_fundo(janela, AZUL_ESCURO)
-    motor.desenha_string(janela, (largura-len('game over'))//2, 5, 'GAME OVER', AZUL_ESCURO, VERMELHO)
-    motor.desenha_string(janela, (largura-len('game over'))//2, 6, '---------', AZUL_ESCURO, AMARELO_DOURADO)
+    motor.desenha_string(janela, (largura-len('game over'))//2, 3, 'GAME OVER', AZUL_ESCURO, VERMELHO)
+    motor.desenha_string(janela, (largura-len('game over'))//2, 4, '---------', AZUL_ESCURO, AMARELO_DOURADO)
     motor.desenha_string(janela, (largura-len('menu inicial - ↑'))//2, altura//2-1, 'MENU INICIAL - ↑', AZUL_ESCURO, BRANCO)
     motor.desenha_string(janela, (largura-len('sair do jogo - esc/q'))//2, altura//2+1, 'SAIR DO JOGO - esc/q', AZUL_ESCURO, BRANCO)
     for y in range(2, altura - 2):
