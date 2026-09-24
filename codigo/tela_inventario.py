@@ -81,13 +81,13 @@ def atualiza_estado(estado, tecla):
                 estado['mensagem'] = 'Espada equipada'
                 for monstro in estado['monstros']:
                     if monstro['tipo'] == MONSTRO1:
-                        monstro['probabilidade de ataque'] = 0.25
+                        monstro['probabilidade de ataque'] = 0.15
 
                     elif monstro['tipo'] == MONSTRO2:
-                        monstro['probabilidade de ataque'] = 0.40
+                        monstro['probabilidade de ataque'] = 0.35
 
                     elif monstro['tipo'] == MONSTRO3:
-                        monstro['probabilidade de ataque'] = 0.55
+                        monstro['probabilidade de ataque'] = 0.50
 
             else:
                 estado['mensagem'] = 'Você não tem espada para equipar'
@@ -98,13 +98,13 @@ def atualiza_estado(estado, tecla):
 
             for monstro in estado['monstros']:
                 if monstro['tipo'] == MONSTRO1:
-                    monstro['probabilidade de ataque'] = 0.30
+                    monstro['probabilidade de ataque'] = 0.20
 
                 elif monstro['tipo'] == MONSTRO2:
-                    monstro['probabilidade de ataque'] = 0.45
+                    monstro['probabilidade de ataque'] = 0.40
 
                 elif monstro['tipo'] == MONSTRO3:
-                    monstro['probabilidade de ataque'] = 0.70
+                    monstro['probabilidade de ataque'] = 0.60
 
         else:
             estado['mensagem'] = 'Você já possui outro item equipado'
