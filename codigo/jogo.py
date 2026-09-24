@@ -4,34 +4,16 @@ import tela_jogo
 import tela_inicial
 import tela_instrucoes
 import tela_game_over
-import sala_secreta
-from constantes import SAIR, TELA_INVENTARIO, TELA_JOGO, TELA_INICIAL, TELA_INSTRUCOES, TELA_GAME_OVER, SALA_SECRETA
+import tela_sala_secreta
+from constantes import SAIR, TELA_INVENTARIO, TELA_JOGO, TELA_INICIAL, TELA_INSTRUCOES, TELA_GAME_OVER, TELA_SALA_SECRETA
 from inicializacao import inicializa_estado
 
 
 def jogo(janela, altura_tela, largura_tela):
-    '''
-    Esta é a porta de entrada do jogo.
-    Você não precisa chamar esta função. Ela será chamada pelo código
-    no final deste arquivo.
-
-    A janela é um estrutura de dados que guarda diversas informações
-    sobre uma janela do jogo. A princípio você não precisa entender
-    o que ela guarda, mas você deverá passar essa janela como argumento
-    para as outras funções que recebem uma janela.
-    '''
     estado = inicializa_estado()
 
     while estado['tela_atual'] != SAIR:
-        # O jogo funciona como se fosse um loop infinito, que só termina quando o jogador
-        # aperta a tecla 'q' ou 'esc' ou quando o jogo termina.
-        # A cada iteração do loop, o jogo desenha uma tela e atualiza o estado do jogo.
-        # A função pega_tecla_apertada é semelhante a uma função input(): ela espera que o
-        # jogador aperte uma tecla e retorna qual tecla foi apertada. Enquanto o jogador não
-        # apertar uma tecla, a função fica travada.
-
-        # A função atualiza_estado é responsável por modificar o valor na chave 'tela_atual',
-        # que é a chave que controla qual tela deve ser desenhada (ou se o jogo deve terminar)
+        
         if estado['tela_atual'] == TELA_INICIAL:
             tela_inicial.desenha_tela(janela, estado, altura_tela, largura_tela)
             tecla = motor_grafico.pega_tecla_apertada(janela)
@@ -57,12 +39,11 @@ def jogo(janela, altura_tela, largura_tela):
             tecla = motor_grafico.pega_tecla_apertada(janela)
             tela_game_over.atualiza_estado(estado, tecla)
 
-        elif estado['tela_atual'] == SALA_SECRETA:
-                    sala_secreta.desenha_tela(janela, estado, altura_tela, largura_tela)
-                    tecla = motor_grafico.pega_tecla_apertada(janela)
-                    sala_secreta.atualiza_estado(estado, tecla)
+        elif estado['tela_atual'] == TELA_SALA_SECRETA:
+            tela_sala_secreta.desenha_tela(janela, estado, altura_tela, largura_tela)
+            tecla = motor_grafico.pega_tecla_apertada(janela)
+            tela_sala_secreta.atualiza_estado(estado, tecla)
 
-        
 
 
 # Não se preocupe, você não precisa entender o que está acontecendo aqui.

@@ -127,18 +127,86 @@ def inicializa_estado():
         posicoes_ocupadas.append(iten['posicao'])
         iten['status'] = None
 
-    inventario = {'✦': 0, '⚗': 0, '†': 1, '⚒': 1, '⚿': 0}
+    inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 3}
+
+
+    pos_jogador_sala = [10, 10]
+
+    paredes_sala = []
+    altura_sala = 0
+    largura_sala = 0
+
+    objetos_sala = [
+    {'tipo': CORACAO, 'posicao': [12, 6], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [30, 5], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [48, 7], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [66, 5], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [84, 7], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [102, 6], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [8, 14], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [110, 14], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [10, 22], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [108, 22], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [26, 24], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [46, 22], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [64, 24], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [82, 22], 'cor': VERMELHO},
+    {'tipo': CORACAO, 'posicao': [100, 24], 'cor': VERMELHO}]
+
+    itens_sala = [
+        {'tipo': POCAO, 'posicao': [20, 10], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [38, 9], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [56, 12], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [74, 9], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [92, 11], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [104, 17], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [88, 18], 'cor': COR_POCAO, 'status': None},
+        {'tipo': POCAO, 'posicao': [24, 18], 'cor': COR_POCAO, 'status': None},
+
+        {'tipo': ELIXIR, 'posicao': [16, 16], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [34, 14], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [52, 17], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [70, 14], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [88, 15], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [100, 20], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [76, 20], 'cor': COR_ELIXIR, 'status': None},
+        {'tipo': ELIXIR, 'posicao': [42, 20], 'cor': COR_ELIXIR, 'status': None},
+
+        {'tipo': ESPADA, 'posicao': [22, 14], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [40, 12], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [58, 15], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [78, 12], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [96, 14], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [90, 21], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [60, 21], 'cor': COR_ESPADA, 'status': None},
+        {'tipo': ESPADA, 'posicao': [32, 21], 'cor': COR_ESPADA, 'status': None},
+
+        {'tipo': MARTELO, 'posicao': [18, 20], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [28, 16], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [46, 14], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [62, 10], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [80, 17], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [98, 18], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [70, 23], 'cor': COR_MARTELO, 'status': None},
+        {'tipo': MARTELO, 'posicao': [50, 23], 'cor': COR_MARTELO, 'status': None}]
+
 
     return {
         'tela_atual': TELA_INICIAL,
         'pos_jogador': pos_jogador,
+        'pos_jogador_sala': pos_jogador_sala,
         'vidas': 5,  
         'max_vidas': 5,
         'experiencia': 0,
         'max_experiencia': 10,
         'nivel': 0,  
         'objetos': objetos,
+        'objetos_sala': objetos_sala,
+        'itens_sala': itens_sala,
         'paredes': paredes,
+        'paredes_sala': paredes_sala,
+        'altura_sala': altura_sala,
+        'largura_sala': largura_sala,
         'monstros': monstros,
         'itens': itens,
         'mapa': mapa,

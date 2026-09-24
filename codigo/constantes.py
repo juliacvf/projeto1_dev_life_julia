@@ -27,6 +27,10 @@ COR_ELIXIR = [60, 230, 230]
 COR_ESPADA = [220, 225, 235]
 COR_MARTELO = [205, 120, 60]
 COR_CHAVE = [255, 200, 40]
+CINZA_PEDRA = (105, 105, 105)
+CINZA = (135, 145, 150)
+AMARELO_TOCHA = (255, 190, 40)
+LARANJA_TOCHA = (255, 110, 20)
                 
 
 # Telas
@@ -37,7 +41,7 @@ TELA_INVENTARIO = 2
 TELA_INICIAL = 3
 TELA_INSTRUCOES = 4
 TELA_GAME_OVER = 5
-SALA_SECRETA = 6
+TELA_SALA_SECRETA = 6
 
 # Objetos
 # As constantes abaixo são os caracteres que representam cada objeto no mapa.

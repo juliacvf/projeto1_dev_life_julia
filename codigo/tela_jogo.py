@@ -76,7 +76,6 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
     mensagem = estado['mensagem']
     motor.desenha_string(janela, 0, altura_tela - 1, mensagem, AZUL_ESCURO, BRANCO)
 
-    motor.desenha_string(janela, 10, 1, str(estado['inventario']['†']), PRETO, BRANCO)
 
     motor.mostra_janela(janela)
 
@@ -250,19 +249,7 @@ def atualiza_estado(estado, tecla):
 
     def batalha(monstro):
         numero = random.random()
-        if numero < 0.30 and monstro['tipo'] == MONSTRO1:
-            estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-            estado['vidas'] -= 1
-            if estado['vidas'] == 0:
-                estado['tela_atual'] = TELA_GAME_OVER
-
-        elif numero < 0.45 and monstro['tipo'] == MONSTRO2:
-            estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
-            estado['vidas'] -= 1
-            if estado['vidas'] == 0:
-                estado['tela_atual'] = TELA_GAME_OVER
-
-        elif numero < 0.70 and monstro['tipo'] == MONSTRO3:
+        if numero < monstro['probabilidade de ataque']:
             estado['mensagem'] = "O monstro atacou e você perdeu uma vida"
             estado['vidas'] -= 1
             if estado['vidas'] == 0:
@@ -293,21 +280,39 @@ def atualiza_estado(estado, tecla):
                     monstro_sorteado = random.choice(lista_monstros)
                     novo_monstro = []
                     novo_monstro += gera_objetos(1, monstro_sorteado, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
+
                     for novo in novo_monstro:
                         if monstro_sorteado == MONSTRO1:
                             novo['vida'] = 5
-                            monstro['max_vidas'] = 5
+                            novo['max_vidas'] = 5
                             novo['probabilidade de ataque'] = 0.30
+
                         elif monstro_sorteado == MONSTRO2:
                             novo['vida'] = 3
-                            monstro['max_vidas'] = 3
+                            novo['max_vidas'] = 3
                             novo['probabilidade de ataque'] = 0.45
                             novo['eixo'] = None
+
                         elif monstro_sorteado == MONSTRO3:
                             novo['vida'] = 2
-                            monstro['max_vidas'] = 2
+                            novo['max_vidas'] = 2
                             novo['probabilidade de ataque'] = 0.70
                             novo['situação'] = None
+
+                        if estado['equipamento'] == 'espada':
+                            if novo['tipo'] == MONSTRO1:
+                                novo['probabilidade de ataque'] = 0.25
+
+                            elif novo['tipo'] == MONSTRO2:
+                                novo['probabilidade de ataque'] = 0.40
+
+                            elif novo['tipo'] == MONSTRO3:
+                                novo['probabilidade de ataque'] = 0.55
+
+                        elif estado['equipamento'] == 'martelo':
+                            novo['max_vidas'] -= 1
+                            novo['vida'] = novo['max_vidas']
+
                         monstros.append(novo)
 
                 objetos.extend(gera_objetos(3, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas))
@@ -436,8 +441,7 @@ def atualiza_estado(estado, tecla):
                     else:
                         estado['vidas'] += 1
                         estado['mensagem'] = "Você ganhou uma vida"
-
-                    estado['objetos'].remove(objeto) 
+                        estado['objetos'].remove(objeto) 
 
     movimento_dos_monstros(estado, tecla, posicao_inicial_jogador)
                 
@@ -546,12 +550,11 @@ def atualiza_estado(estado, tecla):
 
         else:
             estado['mensagem'] = 'Você já possui outro item equipado'
-        
 
     elif tecla == 'k':
         if estado['inventario']['⚿'] < 3:  
             estado['mensagem'] = 'Você ainda não pode acessar a sala secreta'
         else: 
             estado['inventario']['⚿'] -= 3
-            estado['tela_atual'] = SALA_SECRETA
+            estado['tela_atual'] = TELA_SALA_SECRETA
         

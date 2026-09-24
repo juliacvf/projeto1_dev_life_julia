@@ -35,7 +35,6 @@ def desenha_tela(janela, estado, altura, largura):
     motor.desenha_string(janela, 1, altura - 2, '+', MARROM_ESCURO, MARROM_MAIS_ESCURO)
     motor.desenha_string(janela, largura - 2, altura - 2, '+', MARROM_ESCURO, MARROM_MAIS_ESCURO)
 
-    
     motor.mostra_janela(janela)
 
 
@@ -154,4 +153,4 @@ def atualiza_estado(estado, tecla):
             estado['mensagem'] = 'Você ainda não pode acessar a sala secreta'
         else: 
             estado['inventario']['⚿'] -= 3
-            estado['tela_atual'] = SALA_SECRETA
+            estado['tela_atual'] = TELA_SALA_SECRETA
