@@ -17,7 +17,7 @@ def jogo(janela, altura_tela, largura_tela):
     while estado['tela_atual'] != SAIR:
         
         if estado['tela_atual'] == TELA_INICIAL:
-            tela_inicial.desenha_tela(janela, estado, altura_tela, largura_tela)
+            tela_inicial.desenha_tela(janela, altura_tela, largura_tela)
             tecla = motor_grafico.pega_tecla_apertada(janela)
             tela_inicial.atualiza_estado(estado, tecla)
 
@@ -32,12 +32,12 @@ def jogo(janela, altura_tela, largura_tela):
             tela_inventario.atualiza_estado(estado, tecla)
 
         elif estado['tela_atual'] == TELA_INSTRUCOES:
-            tela_instrucoes.desenha_tela(janela, estado, altura_tela, largura_tela)
+            tela_instrucoes.desenha_tela(janela, altura_tela, largura_tela)
             tecla = motor_grafico.pega_tecla_apertada(janela)
             tela_instrucoes.atualiza_estado(estado, tecla)
 
         elif estado['tela_atual'] == TELA_GAME_OVER:
-            tela_game_over.desenha_tela(janela, estado, altura_tela, largura_tela)
+            tela_game_over.desenha_tela(janela, altura_tela, largura_tela)
             tecla = motor_grafico.pega_tecla_apertada(janela)
             tela_game_over.atualiza_estado(estado, tecla)
 
@@ -47,7 +47,4 @@ def jogo(janela, altura_tela, largura_tela):
             tela_sala_secreta.atualiza_estado(estado, tecla)
 
 
-
-# Não se preocupe, você não precisa entender o que está acontecendo aqui.
-# É apenas uma forma de chamar a função jogo() usando a biblioteca curses.
 motor_grafico.chama_funcao_jogo(jogo)

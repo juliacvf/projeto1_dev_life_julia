@@ -1,9 +1,6 @@
 from random import randint
 
-from constantes import *  # Você pode usar as constantes definidas em constantes.py, se achar útil
-                          # Por exemplo, usar a constante CORACAO é o mesmo que colocar a string '❤'
-                          # diretamente no código
-
+from constantes import *  
 
 def gera_posicao_desocupada(posicoes_ocupadas, largura_mapa, altura_mapa):
     p = True
@@ -21,20 +18,6 @@ def gera_posicao_desocupada(posicoes_ocupadas, largura_mapa, altura_mapa):
 
 
 def gera_objetos(quantidade, tipo, cor, largura_mapa, altura_mapa, posicoes_ocupadas):
-    """
-    Esta função já está pronta, você não precisa modificá-la.
-
-    Gera uma lista de objetos do tipo especificado, com a quantidade especificada.
-    Cada objeto é um dicionário com as chaves 'tipo', 'posicao' e 'cor'.
-
-    Parâmetros:
-    quantidade: quantidade de objetos a serem gerados
-    tipo: tipo do objeto a ser gerado. É uma string como '❤'
-    cor: cor do objeto a ser gerado. É uma lista com três elementos, como [255, 0, 0]
-    largura_mapa: largura do mapa do jogo em caracteres
-    altura_mapa: altura do mapa do jogo em caracteres
-    posicoes_ocupadas: lista de posições ocupadas no mapa. Cada posição é uma lista com exatamente dois elementos: a posição x e a posição y.
-    """
     objetos = []
 
     for i in range(quantidade):
@@ -49,8 +32,9 @@ def gera_objetos(quantidade, tipo, cor, largura_mapa, altura_mapa, posicoes_ocup
 
 
 def inicializa_estado():
-    posicoes_ocupadas = []
+    posicoes_ocupadas = [] 
 
+    # mapa com paredes já desenhadas importando do arquivo mapa.txt
     with open('mapa.txt', 'r') as arquivo:
         linhas = arquivo.read().splitlines()
 
@@ -71,22 +55,19 @@ def inicializa_estado():
                 linha_mapa.append(' ')
 
         mapa.append(linha_mapa)
-        
 
     for parede in paredes:
         posicoes_ocupadas.append(parede)
-        
     
     largura_mapa = len(mapa[0])
     altura_mapa = len(mapa)
     
-    
+    # define posição inicial do jogador
     pos_jogador = [largura_mapa//2, altura_mapa//2]  # Meio do mapa
-    
-    
-    # Cria outros objetos do mapa
     posicoes_ocupadas.append(pos_jogador)
 
+
+    # cria objetos do mapa
     objetos = []
     objetos += gera_objetos(10, CORACAO, VERMELHO, largura_mapa, altura_mapa, posicoes_ocupadas)
     objetos += gera_objetos(10, ESPINHO, VERDE_CLARO, largura_mapa, altura_mapa, posicoes_ocupadas)
@@ -94,6 +75,8 @@ def inicializa_estado():
     for objeto in objetos:
         posicoes_ocupadas.append(objeto['posicao'])
 
+
+    # cria monstros do mapa
     monstros = []
     monstros += gera_objetos(8, MONSTRO1, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
     monstros += gera_objetos(7, MONSTRO2, ROXO, largura_mapa, altura_mapa, posicoes_ocupadas)
@@ -118,6 +101,10 @@ def inicializa_estado():
             monstro['probabilidade de ataque'] = 0.60
             monstro['situação'] = None
 
+        posicoes_ocupadas.append(monstro['posicao'])
+
+
+    # cria itens do mapa e inventário
     itens = []
     itens += gera_objetos(4, POCAO, COR_POCAO, largura_mapa, altura_mapa, posicoes_ocupadas)
     itens += gera_objetos(3, ELIXIR, COR_ELIXIR, largura_mapa, altura_mapa, posicoes_ocupadas)
@@ -132,8 +119,11 @@ def inicializa_estado():
     inventario = {'✦': 0, '⚗': 0, '†': 0, '⚒': 0, '⚿': 0}
 
 
+    # define posição inicial do jogador na sala secreta
     pos_jogador_sala = [10, 10]
 
+
+    # define posição das paredes, itens e objetos na sala (posições não aleatórias)
     paredes_sala = []
     altura_sala = 0
     largura_sala = 0
@@ -193,6 +183,7 @@ def inicializa_estado():
         {'tipo': MARTELO, 'posicao': [50, 23], 'cor': COR_MARTELO, 'status': None}]
 
 
+    # reúne todas as informações no estado inicial do jogo
     return {
         'tela_atual': TELA_INICIAL,
         'pos_jogador': pos_jogador,
@@ -214,8 +205,8 @@ def inicializa_estado():
         'mapa': mapa,
         'inventario': inventario,
         'equipamento': None,
-        'mensagem': '', # Use esta mensagem para mostrar mensagens ao jogador, como "Você perdeu uma vida" ou "Você ganhou uma vida"
+        'mensagem': ''
     }
 
 
-inicializa_estado()  # Chame a função para inicializar o estado do jogo
+inicializa_estado()

@@ -3,13 +3,15 @@ import motor_grafico as motor
 from inicializacao import inicializa_estado
 
 
-def desenha_tela(janela, estado, altura, largura):
+def desenha_tela(janela, altura, largura):
+    # posicionamento das partes escritas na tela
     motor.preenche_fundo(janela, AZUL_ESCURO)
     motor.desenha_string(janela, (largura-len('◆ entre monstros e muros ◆'))//2, 3, '◆ ENTRE MONSTROS E MUROS ◆', AZUL_ESCURO, AMARELO_DOURADO)
     motor.desenha_string(janela, (largura-len('jogar - ↑'))//2, (altura//2)-1, 'JOGAR - ↑', AZUL_ESCURO, BRANCO)
     motor.desenha_string(janela, (largura-len('instrucoes - ↓'))//2, (altura//2)+1, 'INSTRUÇÕES - ↓', AZUL_ESCURO, BRANCO)
 
-   
+
+   # desenho dos detalhes das bordas
     for y in range(2, altura - 2):
         motor.desenha_string(janela, 1, y, '|', AZUL_ESCURO, MARROM)
         motor.desenha_string(janela, largura - 2, y, '|', AZUL_ESCURO, MARROM)
@@ -17,16 +19,17 @@ def desenha_tela(janela, estado, altura, largura):
     for x in range(2, largura - 2):
         motor.desenha_string(janela, x, 1, '-', AZUL_ESCURO, MARROM)
         motor.desenha_string(janela, x, altura - 2, '-', AZUL_ESCURO, MARROM)
-
-    
+  
     motor.desenha_string(janela, 1, 1, '+', AZUL_ESCURO, MARROM)
     motor.desenha_string(janela, largura - 2, 1, '+', AZUL_ESCURO, MARROM)
     motor.desenha_string(janela, 1, altura - 2, '+', AZUL_ESCURO, MARROM)
     motor.desenha_string(janela, largura - 2, altura - 2, '+', AZUL_ESCURO, MARROM)
 
+
     motor.mostra_janela(janela)
 
 def atualiza_estado(estado, tecla):
+    # definição de possibilidades de entrada no inventário ou começo do jogo
     if tecla == motor.SETA_CIMA:
         novo_estado = inicializa_estado()
         estado.clear()

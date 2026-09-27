@@ -1,15 +1,17 @@
 from constantes import *
 import motor_grafico as motor
-import random 
+from funcoes_auxiliares import atualizacao_inventario
 
 
 def desenha_tela(janela, estado, altura, largura):
-    itens = estado['itens']
-
+    # posicionamento das partes escritas na tela
     motor.preenche_fundo(janela, MARROM_ESCURO)
     motor.desenha_string(janela, (largura-(len('inventario')))//2, 3, 'INVENTÁRIO', MARROM_ESCURO, AMARELO_DOURADO)
     motor.desenha_string(janela, (largura-(len('----------')))//2, 4, '----------', MARROM_ESCURO, AMARELO_DOURADO)
 
+
+    # conexão com função de estado p/ atualização da tela do inventário a cada coleta ou uso de itens de acordo com o estado do inventário
+    itens = estado['itens']
     for iten in itens:
         if iten['tipo'] == POCAO:
             motor.desenha_string(janela, (largura-len('poção ⚗ : 0x'))//2, 8, f"POÇÃO ⚗ : {estado['inventario']['⚗']}", MARROM_ESCURO, BRANCO)
@@ -21,7 +23,10 @@ def desenha_tela(janela, estado, altura, largura):
             motor.desenha_string(janela, (largura-len('martelo ⚗ : 0x'))//2, 20, f"MARTELO ⚒ : {estado['inventario']['⚒']}", MARROM_ESCURO, BRANCO)
         elif iten['tipo'] == CHAVE:
             motor.desenha_string(janela, (largura-len('chave ⚗ : 0x'))//2, 24, f"CHAVE ⚿ : {estado['inventario']['⚿']}", MARROM_ESCURO, BRANCO)
+        mensagem = estado['mensagem']
+        motor.desenha_string(janela, 0, altura - 1, mensagem, AZUL_ESCURO, BRANCO)
 
+    # desenho dos detalhes das bordas
     for y in range(2, altura - 2):
         motor.desenha_string(janela, 1, y, '|', MARROM_ESCURO, MARROM_MAIS_ESCURO)
         motor.desenha_string(janela, largura - 2, y, '|', MARROM_ESCURO, MARROM_MAIS_ESCURO)
@@ -35,126 +40,16 @@ def desenha_tela(janela, estado, altura, largura):
     motor.desenha_string(janela, 1, altura - 2, '+', MARROM_ESCURO, MARROM_MAIS_ESCURO)
     motor.desenha_string(janela, largura - 2, altura - 2, '+', MARROM_ESCURO, MARROM_MAIS_ESCURO)
 
+
     motor.mostra_janela(janela)
 
 
 def atualiza_estado(estado, tecla):
-    itens = estado['itens']
-    inventário = estado['inventario']
-
+    # definição de retorno à tela do jogo ou saída do jogo
     if tecla == 'i':
         estado['tela_atual'] = TELA_JOGO
     elif tecla in (motor.ESCAPE, 'q'):
         estado['tela_atual'] = SAIR
-
-    elif tecla == 'p':
-        if estado['inventario']['⚗'] >= 1:
-            estado['inventario']['⚗'] -= 1
-            numero = random.random()
-            if numero <= 0.4:
-                estado['vidas'] -= 1
-                estado['max_vidas'] -= 1
-                estado['mensagem'] = 'Sua quantidade máxima de vidas diminuiu'
-        
-            else:
-                estado['max_vidas'] += 1
-                estado['vidas'] += 1
-                estado['mensagem'] = 'Sua quantidade máxima de vidas aumentou'
-
-        else:
-            estado['mensagem'] = 'Você não tem poções'
-
-    elif tecla == 'e':
-        if estado['inventario']['✦'] >= 1:
-            estado['inventario']['✦'] -= 1
-            estado['experiencia'] += 2
-            estado['mensagem'] = 'Você ganhou 2 pontos de experiência'
-
-        else:
-            estado['mensagem'] = 'Você não tem elixir'
-
-    elif tecla == 's':
-        if estado['equipamento'] is None:
-            if estado['inventario']['†'] >= 1:
-                estado['inventario']['†'] -= 1
-                estado['equipamento'] = 'espada'
-                estado['mensagem'] = 'Espada equipada'
-                for monstro in estado['monstros']:
-                    if monstro['tipo'] == MONSTRO1:
-                        monstro['probabilidade de ataque'] = 0.15
-
-                    elif monstro['tipo'] == MONSTRO2:
-                        monstro['probabilidade de ataque'] = 0.35
-
-                    elif monstro['tipo'] == MONSTRO3:
-                        monstro['probabilidade de ataque'] = 0.50
-
-            else:
-                estado['mensagem'] = 'Você não tem espada para equipar'
-
-        elif estado['equipamento'] == 'espada':
-            estado['equipamento'] = None
-            estado['mensagem'] = 'Espada desequipada'
-
-            for monstro in estado['monstros']:
-                if monstro['tipo'] == MONSTRO1:
-                    monstro['probabilidade de ataque'] = 0.20
-
-                elif monstro['tipo'] == MONSTRO2:
-                    monstro['probabilidade de ataque'] = 0.40
-
-                elif monstro['tipo'] == MONSTRO3:
-                    monstro['probabilidade de ataque'] = 0.60
-
-        else:
-            estado['mensagem'] = 'Você já possui outro item equipado'
-
-    elif tecla == 'h':
-        if estado['equipamento'] is None:
-
-            if estado['inventario']['⚒'] >= 1:
-                estado['inventario']['⚒'] -= 1
-                estado['equipamento'] = 'martelo'
-                estado['mensagem'] = 'Martelo equipado'
-
-                for monstro in estado['monstros']:
-                    if monstro['tipo'] == MONSTRO1:
-                        monstro['max_vidas'] = 4
-
-                    elif monstro['tipo'] == MONSTRO2:
-                        monstro['max_vidas'] = 2
-
-                    elif monstro['tipo'] == MONSTRO3:
-                        monstro['max_vidas'] = 1
-
-                    if monstro['vida'] > monstro['max_vidas']:
-                        monstro['vida'] = monstro['max_vidas']
-
-            else:
-                estado['mensagem'] = 'Você não tem martelo para equipar'
-
-        elif estado['equipamento'] == 'martelo':
-            estado['equipamento'] = None
-            estado['mensagem'] = 'Martelo desequipado'
-
-            for monstro in estado['monstros']:
-                if monstro['tipo'] == MONSTRO1:
-                    monstro['max_vidas'] = 5
-
-                elif monstro['tipo'] == MONSTRO2:
-                    monstro['max_vidas'] = 3
-
-                elif monstro['tipo'] == MONSTRO3:
-                    monstro['max_vidas'] = 2
-
-
-        else:
-            estado['mensagem'] = 'Você já possui outro item equipado'
-        
-
-    elif tecla == 'k':
-        if estado['inventario']['⚿'] < 3:  
-            estado['mensagem'] = 'Você ainda não pode acessar a sala secreta'
-        else: 
-            estado['inventario']['⚿'] -= 3
-            estado['tela_atual'] = TELA_SALA_SECRETA
+    
+    # definição do estado do inventário
+    atualizacao_inventario(estado, tecla)

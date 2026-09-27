@@ -1,9 +1,4 @@
-# Constante de cores para facilitar a vida
-# Fique à vontade para adicionar e/ou modificar os valores deste arquivo
-
-# Cores
-# Uma cor é representada por uma lista de 3 valores. Cada valor representa 
-# a intensidade de vermelho, verde e azul, respectivamente, em uma escala de 0 a 255.
+# cores:
 PRETO = [0, 0, 0]
 BRANCO = [238, 231, 211]
 VERDE_CLARO = [112, 174, 116]
@@ -31,10 +26,8 @@ CINZA_PEDRA = (105, 105, 105)
 CINZA = (135, 145, 150)
 AMARELO_TOCHA = (255, 190, 40)
 LARANJA_TOCHA = (255, 110, 20)
-                
 
-# Telas
-# As constantes abaixo são apenas números. Elas são usadas para controlar qual tela deve ser desenhada.
+# telas:          
 SAIR = 0
 TELA_JOGO = 1
 TELA_INVENTARIO = 2
@@ -43,9 +36,7 @@ TELA_INSTRUCOES = 4
 TELA_GAME_OVER = 5
 TELA_SALA_SECRETA = 6
 
-# Objetos
-# As constantes abaixo são os caracteres que representam cada objeto no mapa.
-# Você pode mudar os caracteres para o que preferir.
+# personagens:
 JOGADOR = '☺'
 CORACAO = '♥'
 ESPINHO = '▲'
