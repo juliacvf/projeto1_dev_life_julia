@@ -11,8 +11,7 @@ from inicializacao import inicializa_estado
 
 def jogo(janela, altura_tela, largura_tela):
     estado = inicializa_estado()
-
-    print(altura_tela)
+    print(altura_tela, largura_tela)
 
     while estado['tela_atual'] != SAIR:
         

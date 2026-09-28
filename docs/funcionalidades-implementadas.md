@@ -2,7 +2,7 @@
 
 As seguintes funcionalidades do projeto foram implementadas:
 
-Coloque aqui o link para o vídeo, de no máximo 2 minutos, do jogo: [LINK VÍDEO](https://linkparaovideo.com)
+Coloque aqui o link para o vídeo, de no máximo 2 minutos, do jogo: [LINK VÍDEO](https://youtu.be/MqiYjzlBCPw?si=0tUjaG_OHei8YYU9)
 
 ### [Nível Básico](basico.md)
 
