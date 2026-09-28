@@ -37,7 +37,7 @@ def desenha_tela(janela, estado, altura_tela, largura_tela):
             motor.desenha_string(janela, x, y, ' ', VERDE_FLORESTA, VERDE_FLORESTA)
 
             if posicao == estado['pos_jogador']:
-                motor.desenha_string(janela, x, y, JOGADOR, VERDE_FLORESTA, ROXO)
+                motor.desenha_string(janela, x, y, JOGADOR, VERDE_FLORESTA, AZUL_ESCURO)
 
             for objeto in estado['objetos']:
                 if posicao == objeto['posicao']:

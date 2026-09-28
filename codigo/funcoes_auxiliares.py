@@ -313,6 +313,7 @@ def passa_por_objetos(estado): # definição das especificidades das funcionalid
             elif objeto['tipo'] == CORACAO: # ao passar por corações, não tendo atingido a vida máxima, o jogador ganha vidas e os corações são removidos do mapa
                 if estado['vidas'] == estado['max_vidas']:
                         estado['mensagem'] = "Vida cheia" # se não tiver como coletar vidas por já estar com a vida máxia cheia, os corações seguem no mapa para posterior coleta
+                        estado['objetos'].remove(objeto)
                 else:
                     estado['vidas'] += 1
                     estado['mensagem'] = "Você ganhou uma vida"

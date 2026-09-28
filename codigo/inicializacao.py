@@ -93,13 +93,13 @@ def inicializa_estado():
             monstro['vida'] = 3
             monstro['max_vidas'] = 3
             monstro['probabilidade de ataque'] = 0.40
-            monstro['eixo'] = None
+            monstro['eixo'] = None # definir direção do movimento do monstro - ver função de movimento dos monstros
 
         elif monstro['tipo'] == MONSTRO3:
             monstro['vida'] = 2
             monstro['max_vidas'] = 2
             monstro['probabilidade de ataque'] = 0.60
-            monstro['situação'] = None
+            monstro['situação'] = None # definir se está na rodada de o konstro andar ou não - ver função de movimento dos monstros
 
         posicoes_ocupadas.append(monstro['posicao'])
 
